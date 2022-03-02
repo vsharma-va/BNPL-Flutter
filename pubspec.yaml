@@ -41,6 +41,13 @@ dev_dependencies:
     sdk: flutter
   rive: ^0.8.1
   font_awesome_flutter: 9.0.0-nullsafety
+  google_sign_in: ^5.2.3 
+  amplify_auth_cognito: ^0.4.0
+  amplify_flutter: ^0.4.0
+  pin_code_fields: ^7.3.0
+  amazon_cognito_identity_dart_2: ^1.0.5
+  aws_lambda_api: ^1.2.0
+  firebase_messaging: ^11.2.8
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -62,6 +69,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/animations/
+    - assets/Images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
