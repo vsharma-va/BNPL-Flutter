@@ -1,16 +1,8 @@
 # bnpl
+If you want to download and use the app, you will have to setup AWS and Cognito.  
+You can get started here https://docs.amplify.aws/lib/auth/getting-started/q/platform/flutter/#check-the-current-auth-session.  
+For sign in/up to work with google and facebook you will have to do some additional configuration.  
+Instructions here https://docs.amplify.aws/lib/auth/social_signin_web_ui/q/platform/flutter/#ios-platform-setup.  
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+In the temp.dart file comment out the testCallLambda function and the text widget where its being called.  
+That function is calling a lambda function which returns all the tables in the database.
