@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as rive;
 import './welcome.dart';
 
 class Splash extends StatefulWidget {
@@ -27,12 +27,20 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color.fromRGBO(53, 56, 57, 1),
       body: Container(
         width: screenSize.width,
         height: screenSize.height,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            colors: [
+              Color.fromRGBO(34, 0, 50, 1),
+              Color.fromRGBO(228, 173, 58, 1),
+            ],
+          ),
+        ),
         child: const Center(
-          child: RiveAnimation.asset(
+          child: rive.RiveAnimation.asset(
             "assets/animations/splash_animation.riv",
             fit: BoxFit.fill,
           ),

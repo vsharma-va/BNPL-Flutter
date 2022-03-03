@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:aws_lambda_api/lambda-2015-03-31.dart' as lambda;
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../auth/components/errorSnackBar.dart';
+import '../components/file_read_write.dart';
 
 class Temp extends StatefulWidget {
   @override
@@ -48,8 +48,8 @@ class _TempState extends State<Temp> {
     try {
       await Amplify.Auth.signOut(options: SignOutOptions(globalSignOut: true));
       print('success');
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: ((context) => Login())));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: ((context) => Login(attributes: attributes))));
     } on AmplifyException catch (e) {
       context.showErrorSnackBar(message: e.message);
     }
@@ -124,7 +124,16 @@ class _TempState extends State<Temp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: what,
+              onPressed: () {
+                if (attributes['identities']!.contains('Google')) {
+                  print(writeDetails("${attributes['email']} Google"));
+                  print(1);
+                } else if (attributes['identities']!.contains('Facebook')) {
+                  print(writeDetails("${attributes['email']} Facebook"));
+                  print(2);
+                }
+                what();
+              },
               child: const Text("Signout"),
             ),
             ElevatedButton(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'components/file_read_write.dart';
 
 import './login.dart';
 import 'Home/temp.dart';
@@ -13,20 +14,40 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
+  Map<String, String> map = {};
   @override
   void initState() {
     super.initState();
     _checkUserStatus();
   }
 
-  _navigateToLogin() async {
-    await Future.delayed(const Duration(milliseconds: 2000), () {});
+  Map<String, String> _readToAMap() {
+    Map<String, String> map = {};
 
+    readDetails().then((value) {
+      var x = value.split(' ');
+      if (x.length > 1) {
+        map['email'] = x[0];
+        map['identities'] = x[1];
+      }
+      print(map);
+      return map;
+    });
+
+    return map;
+  }
+
+  _navigateToLogin() async {
+    map = _readToAMap();
+    await Future.delayed(const Duration(milliseconds: 6000), () {});
+    print(map);
     Navigator.push(
         context,
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 1500),
-          pageBuilder: (_, __, ___) => Login(),
+          pageBuilder: (_, __, ___) => Login(
+            fileMap: map,
+          ),
         ));
   }
 
@@ -49,8 +70,8 @@ class _WelcomeState extends State<Welcome> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             colors: [
-              Color.fromRGBO(53, 56, 57, 1),
-              Color.fromRGBO(53, 56, 57, 1)
+              Color.fromRGBO(34, 0, 50, 1),
+              Color.fromRGBO(228, 173, 58, 1),
             ],
           ),
         ),
@@ -65,7 +86,7 @@ class _WelcomeState extends State<Welcome> {
                   style: TextStyle(
                     fontSize: 55,
                     letterSpacing: 2,
-                    color: Color.fromARGB(255, 0, 255, 213),
+                    color: Colors.white,
                   ),
                 ),
               ),
