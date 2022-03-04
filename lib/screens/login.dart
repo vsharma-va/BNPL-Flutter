@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rive/rive.dart' as rive;
 
 import 'auth/login_card.dart';
+import 'auth/car_animation.dart';
 
 class Login extends StatefulWidget {
   Login({this.attributes, this.fileMap});
@@ -12,10 +14,11 @@ class Login extends StatefulWidget {
       _LoginState(attributes: attributes, fileMap: fileMap);
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   _LoginState({this.attributes, this.fileMap});
   final Map<String, String>? attributes;
   final Map<String, String>? fileMap;
+  late AnimationController animController;
   bool isSignUpScreen = true;
 
   late ScrollController _scrollController;
@@ -27,6 +30,22 @@ class _LoginState extends State<Login> {
       ..addListener(() {
         _onScroll();
       });
+    animController = AnimationController(
+        duration: const Duration(milliseconds: 9000), vsync: this)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          animController.reset();
+          animController.forward();
+        }
+      });
+    animController.forward();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+    animController.dispose();
   }
 
   double _scrollOffset = 0.0;
@@ -47,6 +66,7 @@ class _LoginState extends State<Login> {
 
   final double _layer1Speed = 0.5;
   final double _layer2Speed = 0.4;
+  final double _layer3Speed = 0.95;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +86,19 @@ class _LoginState extends State<Login> {
         ),
         child: Stack(
           children: <Widget>[
+            // Positioned(
+            //   child: Image.asset("./assets/Images/s(1).png"),
+            //   top: screenSize.height / 2 - 100,
+            //   right: screenSize.width - 200,
+            //   left: 0,
+            // ),
+            Positioned.fill(
+              bottom: _layer3Speed * _scrollOffset + 200,
+              right: 0,
+              child: Image.asset(
+                "./assets/Images/up_arrow.png",
+              ),
+            ),
             Positioned(
               bottom: _layer2Speed * _scrollOffset + 120,
               right: 0,
@@ -92,6 +125,17 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
+            Positioned.fill(
+              top:
+                  screenSize.height + (_layer1Speed * _scrollOffset * -1) + 350,
+              right: 0,
+              left: 0,
+              bottom: 0,
+              // height: screenSize.height * 0.9,
+              child: Image.asset(
+                "./assets/Images/background(4).png",
+              ),
+            ),
             Positioned(
               top: screenSize.height / 2 - (_layer1Speed - 0.3) * _scrollOffset,
               child: Container(
@@ -106,10 +150,11 @@ class _LoginState extends State<Login> {
                 ),
                 child: Text(
                   attributes != null
-                      ? "Hi ${attributes!['email']!.split('@')[0]}!"
+                      ? "Hi Vaibhav"
+                      // ? "Hi ${attributes!['email']!.split('@')[0].substring(0, 14)}!"
                       // : "Hi ${fileMap['email']!.split('@')[0]};",
                       : fileMap!.isNotEmpty
-                          ? "Hi ${fileMap!['email']!.split('@')[0]}!"
+                          ? "Hi Vaibhav" //"Hi ${fileMap!['email']!.split('@')[0].substring(0, 14)}!"
                           : "Hi!",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.balooTamma(
@@ -121,6 +166,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
+
             Positioned.fill(
               child: SingleChildScrollView(
                 controller: _scrollController,
@@ -129,6 +175,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
+
             Positioned(
               top: screenSize.height + (_layer1Speed * _scrollOffset * -1) - 70,
               right: 0,
@@ -136,11 +183,30 @@ class _LoginState extends State<Login> {
               height: screenSize.height * 0.9,
               child: Stack(
                 children: [
+                  CarAnim(
+                    animController: animController,
+                    width: screenSize.width,
+                  ),
                   LoginScreen(
                     attributes: attributes ?? fileMap,
                     screenSize: screenSize,
                     globalKey: GlobalKey(),
                   ),
+                  // Positioned(
+                  //   top: 300,
+                  //   left: 0,
+                  //   right: 0,
+                  //   child: Center(
+                  //     child: Container(
+                  //       height: 500,
+                  //       width: 250,
+                  //       child: rive.RiveAnimation.asset(
+                  //         "assets/animations/logo_Animation.riv",
+                  //         fit: BoxFit.contain,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

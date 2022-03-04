@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'components/file_read_write.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import './login.dart';
 import 'Home/temp.dart';
@@ -80,12 +81,11 @@ class _WelcomeState extends State<Welcome> {
           children: [
             Hero(
               tag: "Welcome Text",
-              child: RichText(
-                text: const TextSpan(
-                  text: "Welcome!",
-                  style: TextStyle(
-                    fontSize: 55,
-                    letterSpacing: 2,
+              child: Text(
+                'Welcome !',
+                style: GoogleFonts.balooTamma(
+                  textStyle: const TextStyle(
+                    fontSize: 45,
                     color: Colors.white,
                   ),
                 ),

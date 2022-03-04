@@ -156,53 +156,53 @@ class _TempState extends State<Temp> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (attributes.length == 4)
-                  Text(
-                    'Cognito Id: ${attributes['sub']}',
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 0, 255, 213),
-                    ),
-                  ),
-                const SizedBox(height: 10),
-                if (attributes.length == 4)
-                  Text(
-                    'Google Id: ${(attributes['identities'])}',
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 0, 255, 213),
-                    ),
-                  ),
-                const SizedBox(height: 10),
-                if (attributes.length == 4)
-                  Text(
-                    'email: ${attributes['email']}',
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 0, 255, 213),
-                    ),
-                  ),
-                if (attributes.length < 4)
-                  Text(
-                    'Cognito Id: ${attributes['sub']}',
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 0, 255, 213),
-                    ),
-                  ),
-                const SizedBox(height: 10),
-                if (attributes.length < 4)
-                  Text(
-                    'Email Verified: ${attributes['email_verified']}',
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 0, 255, 213),
-                    ),
-                  ),
-                const SizedBox(height: 10),
-                if (attributes.length < 4)
-                  Text(
-                    'Email: ${attributes['email']}',
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 0, 255, 213),
-                    ),
-                  ),
-                const SizedBox(height: 20),
+                // if (attributes.length == 4)
+                //   Text(
+                //     'Cognito Id: ${attributes['sub']}',
+                //     style: const TextStyle(
+                //       color: Color.fromARGB(255, 0, 255, 213),
+                //     ),
+                //   ),
+                // const SizedBox(height: 10),
+                // if (attributes.length == 4)
+                //   Text(
+                //     'Google Id: ${(attributes['identities'])}',
+                //     style: const TextStyle(
+                //       color: Color.fromARGB(255, 0, 255, 213),
+                //     ),
+                //   ),
+                // const SizedBox(height: 10),
+                // if (attributes.length == 4)
+                //   Text(
+                //     'email: ${attributes['email']}',
+                //     style: const TextStyle(
+                //       color: Color.fromARGB(255, 0, 255, 213),
+                //     ),
+                //   ),
+                // if (attributes.length < 4)
+                //   Text(
+                //     'Cognito Id: ${attributes['sub']}',
+                //     style: const TextStyle(
+                //       color: Color.fromARGB(255, 0, 255, 213),
+                //     ),
+                //   ),
+                // const SizedBox(height: 10),
+                // if (attributes.length < 4)
+                //   Text(
+                //     'Email Verified: ${attributes['email_verified']}',
+                //     style: const TextStyle(
+                //       color: Color.fromARGB(255, 0, 255, 213),
+                //     ),
+                //   ),
+                // const SizedBox(height: 10),
+                // if (attributes.length < 4)
+                //   Text(
+                //     'Email: ${attributes['email']}',
+                //     style: const TextStyle(
+                //       color: Color.fromARGB(255, 0, 255, 213),
+                //     ),
+                //   ),
+                // const SizedBox(height: 20),
                 Text(
                   'Lambda Result: $response',
                   style: const TextStyle(

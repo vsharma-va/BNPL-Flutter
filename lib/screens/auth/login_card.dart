@@ -84,15 +84,65 @@ class _LoginScreenState extends State<LoginScreen> {
       left: screenSize.width / 2 - 168,
       height: screenSize.height * 0.5,
       width: screenSize.width - 40,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.only(left: 25),
-            child: Column(
-              children: [
-                if (_nullCheckAttributes()!.isNotEmpty)
-                  if (attributes!['identities']!.contains('Google'))
+      child: Center(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              child: Column(
+                children: [
+                  if (_nullCheckAttributes()!.isNotEmpty)
+                    if (attributes!['identities']!.contains('Google'))
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          onPrimary: Colors.black,
+                        ),
+                        icon: const FaIcon(
+                          FontAwesomeIcons.google,
+                          color: Colors.red,
+                        ),
+                        label: Text(
+                          'Continue With Google',
+                          style: GoogleFonts.balooTamma(
+                            textStyle: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          googleSignIn();
+                        },
+                      ),
+                  if (_nullCheckAttributes()!.isNotEmpty)
+                    if (attributes!['identities']!.contains('Facebook'))
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton.icon(
+                          icon: const FaIcon(
+                            FontAwesomeIcons.facebook,
+                            color: Colors.blue,
+                          ),
+                          label: Text(
+                            'Continue With Facebook',
+                            style: GoogleFonts.balooTamma(
+                              textStyle: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                            onPrimary: Colors.black,
+                          ),
+                          onPressed: () {
+                            facebookSignUp();
+                          },
+                        ),
+                      ),
+                  if (_nullCheckAttributes()!.isEmpty)
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         primary: Colors.white,
@@ -115,8 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         googleSignIn();
                       },
                     ),
-                if (_nullCheckAttributes()!.isNotEmpty)
-                  if (attributes!['identities']!.contains('Facebook'))
+                  if (_nullCheckAttributes()!.isEmpty)
                     Container(
                       alignment: Alignment.bottomCenter,
                       child: ElevatedButton.icon(
@@ -142,59 +191,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                     ),
-                if (_nullCheckAttributes()!.isEmpty)
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                      onPrimary: Colors.black,
-                    ),
-                    icon: const FaIcon(
-                      FontAwesomeIcons.google,
-                      color: Colors.red,
-                    ),
-                    label: Text(
-                      'Continue With Google',
-                      style: GoogleFonts.balooTamma(
-                        textStyle: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      googleSignIn();
-                    },
-                  ),
-                if (_nullCheckAttributes()!.isEmpty)
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton.icon(
-                      icon: const FaIcon(
-                        FontAwesomeIcons.facebook,
-                        color: Colors.blue,
-                      ),
-                      label: Text(
-                        'Continue With Facebook',
-                        style: GoogleFonts.balooTamma(
-                          textStyle: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
-                      ),
-                      onPressed: () {
-                        facebookSignUp();
-                      },
-                    ),
-                  ),
-              ],
-            ),
-          )
-        ],
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
