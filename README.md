@@ -6,3 +6,7 @@ Instructions here https://docs.amplify.aws/lib/auth/social_signin_web_ui/q/platf
 
 In the temp.dart file comment out the testCallLambda function and the text widget where its being called.  
 That function is calling a lambda function which returns all the tables in the database.
+
+## Preview
+![V2](https://user-images.githubusercontent.com/78730763/156738573-1d558d18-2a70-47b4-8e2c-b3cd5c468491.mp4)  
+![V1](https://user-images.githubusercontent.com/78730763/156738736-2bcdf010-deab-4610-a7c9-2f6677f46123.mp4)
