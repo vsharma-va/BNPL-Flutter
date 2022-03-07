@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../components/user_name_form.dart';
+import './components/user_name_form.dart';
 import '../components/animated_indexed_stack.dart';
-import '../components/pan_card_form.dart';
+import './components/pan_card_form.dart';
 import '../Home/temp.dart';
 
 class UserForm extends StatefulWidget {
