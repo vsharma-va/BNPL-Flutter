@@ -40,8 +40,13 @@ class _BNPLState extends State<BNPL> {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Splash(),
+    return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ThemeData().colorScheme.copyWith(
+              primary: const Color.fromRGBO(225, 200, 87, 1),
+            ),
+      ),
+      home: const Splash(),
     );
   }
 }

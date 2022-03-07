@@ -5,7 +5,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'components/errorSnackBar.dart';
-import '../Home/temp.dart';
+import '../Home/user_info.dart';
 
 class LoginScreen extends StatefulWidget {
   final Size screenSize;
@@ -49,8 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
       var res =
           await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
       if (res.isSignedIn) {
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: ((context) => Temp())));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: ((context) => UserForm())));
       }
     } on AmplifyException catch (e) {
       context.showErrorSnackBar(message: e.message);
@@ -62,8 +62,8 @@ class _LoginScreenState extends State<LoginScreen> {
       var res =
           await Amplify.Auth.signInWithWebUI(provider: AuthProvider.facebook);
       if (res.isSignedIn) {
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: ((context) => Temp())));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: ((context) => UserForm())));
       }
     } on AmplifyException catch (e) {
       context.showErrorSnackBar(message: e.message);

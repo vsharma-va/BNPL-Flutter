@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FormFields extends StatelessWidget {
   FormFields({
     required this.controller,
     required this.iconData,
+    required this.labelText,
     required this.hintText,
     required this.emptyErrorBool,
     required this.emptyErrorString,
@@ -24,6 +26,7 @@ class FormFields extends StatelessWidget {
   final String emptyErrorString;
   final String minLengthErrorString;
   final String hintText;
+  final String labelText;
 
   @override
   Widget build(BuildContext context) {
@@ -35,41 +38,66 @@ class FormFields extends StatelessWidget {
       autocorrect: passwordBool ? false : true,
       keyboardType:
           passwordBool ? TextInputType.text : TextInputType.emailAddress,
+      style: GoogleFonts.balooTamma(
+        textStyle: const TextStyle(
+            fontSize: 20, fontWeight: FontWeight.normal, color: Colors.white),
+      ),
       decoration: InputDecoration(
-        hintText: hintText,
+        labelText: '$labelText*',
+        labelStyle: GoogleFonts.balooTamma(
+          textStyle: const TextStyle(
+              fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        floatingLabelStyle: GoogleFonts.balooTamma(
+          textStyle: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(225, 200, 87, 1)),
+        ),
+        hintText: '$hintText*',
+        hintStyle: GoogleFonts.balooTamma(
+          textStyle: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.normal,
+              color: Color.fromARGB(255, 133, 133, 133)),
+        ),
         prefixIcon: Icon(
           iconData,
         ),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(53, 56, 57, 1),
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(25.0),
+            width: 3,
+            color: Colors.white,
           ),
         ),
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(53, 56, 57, 1),
+            width: 3,
+            color: Color.fromRGBO(225, 200, 87, 1),
           ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(25.0),
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(15),
+            topLeft: Radius.circular(15),
           ),
         ),
         errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
+            width: 3,
             color: Color.fromARGB(255, 194, 25, 25),
           ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(25.0),
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(15),
+            topLeft: Radius.circular(15),
           ),
         ),
         focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
+            width: 3,
             color: Color.fromARGB(255, 212, 20, 20),
           ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(25.0),
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(15),
+            topLeft: Radius.circular(15),
           ),
         ),
       ),

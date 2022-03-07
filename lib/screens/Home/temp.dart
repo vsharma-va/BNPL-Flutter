@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:aws_lambda_api/lambda-2015-03-31.dart' as lambda;
+import 'package:google_fonts/google_fonts.dart';
 
 import '../auth/components/errorSnackBar.dart';
 import '../components/file_read_write.dart';
@@ -46,6 +47,9 @@ class _TempState extends State<Temp> {
 
   Future<void> what() async {
     try {
+      if (attributes == null || attributes.isEmpty) {
+        please();
+      }
       await Amplify.Auth.signOut(options: SignOutOptions(globalSignOut: true));
       print('success');
       Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -120,98 +124,15 @@ class _TempState extends State<Temp> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(53, 56, 57, 1),
       body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                if (attributes['identities']!.contains('Google')) {
-                  print(writeDetails("${attributes['email']} Google"));
-                  print(1);
-                } else if (attributes['identities']!.contains('Facebook')) {
-                  print(writeDetails("${attributes['email']} Facebook"));
-                  print(2);
-                }
-                what();
-              },
-              child: const Text("Signout"),
+        alignment: Alignment.center,
+        child: Text(
+          "Finished !",
+          style: GoogleFonts.balooTamma(
+            textStyle: const TextStyle(
+              color: Color.fromRGBO(225, 200, 87, 1),
+              fontSize: 35,
             ),
-            ElevatedButton(
-              onPressed: () {
-                testCallLambda();
-              },
-              child: const Text("Retry"),
-            ),
-            TextField(
-              keyboardType: TextInputType.phone,
-              controller: phoneController,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // _sendSMS('your code is 123456', ['9860285402']);
-              },
-              child: const Text("Confirm"),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // if (attributes.length == 4)
-                //   Text(
-                //     'Cognito Id: ${attributes['sub']}',
-                //     style: const TextStyle(
-                //       color: Color.fromARGB(255, 0, 255, 213),
-                //     ),
-                //   ),
-                // const SizedBox(height: 10),
-                // if (attributes.length == 4)
-                //   Text(
-                //     'Google Id: ${(attributes['identities'])}',
-                //     style: const TextStyle(
-                //       color: Color.fromARGB(255, 0, 255, 213),
-                //     ),
-                //   ),
-                // const SizedBox(height: 10),
-                // if (attributes.length == 4)
-                //   Text(
-                //     'email: ${attributes['email']}',
-                //     style: const TextStyle(
-                //       color: Color.fromARGB(255, 0, 255, 213),
-                //     ),
-                //   ),
-                // if (attributes.length < 4)
-                //   Text(
-                //     'Cognito Id: ${attributes['sub']}',
-                //     style: const TextStyle(
-                //       color: Color.fromARGB(255, 0, 255, 213),
-                //     ),
-                //   ),
-                // const SizedBox(height: 10),
-                // if (attributes.length < 4)
-                //   Text(
-                //     'Email Verified: ${attributes['email_verified']}',
-                //     style: const TextStyle(
-                //       color: Color.fromARGB(255, 0, 255, 213),
-                //     ),
-                //   ),
-                // const SizedBox(height: 10),
-                // if (attributes.length < 4)
-                //   Text(
-                //     'Email: ${attributes['email']}',
-                //     style: const TextStyle(
-                //       color: Color.fromARGB(255, 0, 255, 213),
-                //     ),
-                //   ),
-                // const SizedBox(height: 20),
-                Text(
-                  'Lambda Result: $response',
-                  style: const TextStyle(
-                    color: Colors.red,
-                  ),
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );

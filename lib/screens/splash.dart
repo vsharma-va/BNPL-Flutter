@@ -34,8 +34,8 @@ class _SplashState extends State<Splash> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             colors: [
-              Color.fromRGBO(34, 0, 50, 1),
-              Color.fromRGBO(228, 173, 58, 1),
+              Color.fromRGBO(205, 205, 205, 1),
+              Color.fromRGBO(67, 67, 67, 1),
             ],
           ),
         ),

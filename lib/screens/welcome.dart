@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'components/file_read_write.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import './login.dart';
-import 'Home/temp.dart';
+import 'Home/user_info.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({Key? key}) : super(key: key);
@@ -20,6 +23,20 @@ class _WelcomeState extends State<Welcome> {
   void initState() {
     super.initState();
     _checkUserStatus();
+    _getStoragePermission();
+  }
+
+  void _getStoragePermission() async {
+    var status = await Permission.storage.status;
+    if (status.isDenied) {
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.storage,
+      ].request();
+      print(statuses[Permission.storage]);
+    }
+    if (status.isPermanentlyDenied) {
+      exit(0);
+    }
   }
 
   Map<String, String> _readToAMap() {
@@ -45,7 +62,7 @@ class _WelcomeState extends State<Welcome> {
     Navigator.push(
         context,
         PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 1500),
+          transitionDuration: const Duration(milliseconds: 1000),
           pageBuilder: (_, __, ___) => Login(
             fileMap: map,
           ),
@@ -55,8 +72,8 @@ class _WelcomeState extends State<Welcome> {
   Future<void> _checkUserStatus() async {
     try {
       final user = await Amplify.Auth.getCurrentUser();
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: ((context) => Temp())));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: ((context) => UserForm())));
     } on AuthException catch (e) {
       _navigateToLogin();
     }
@@ -71,8 +88,8 @@ class _WelcomeState extends State<Welcome> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             colors: [
-              Color.fromRGBO(34, 0, 50, 1),
-              Color.fromRGBO(228, 173, 58, 1),
+              Color.fromRGBO(205, 205, 205, 1),
+              Color.fromRGBO(67, 67, 67, 1),
             ],
           ),
         ),
@@ -91,7 +108,7 @@ class _WelcomeState extends State<Welcome> {
                 ),
               ),
             ),
-            const Center(child: CircularProgressIndicator()),
+            const Center(child: CircularProgressIndicator(color: Colors.white)),
           ],
         ),
       ),

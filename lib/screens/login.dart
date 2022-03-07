@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rive/rive.dart' as rive;
 
 import 'auth/login_card.dart';
-import 'auth/car_animation.dart';
 
 class Login extends StatefulWidget {
   Login({this.attributes, this.fileMap});
@@ -43,9 +41,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
     _scrollController.dispose();
     animController.dispose();
+    super.dispose();
   }
 
   double _scrollOffset = 0.0;
@@ -65,8 +63,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   }
 
   final double _layer1Speed = 0.5;
-  final double _layer2Speed = 0.4;
+  final double _layer2Speed = 0.75;
   final double _layer3Speed = 0.95;
+  final double _layer4Speed = 0.65;
 
   @override
   Widget build(BuildContext context) {
@@ -76,14 +75,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       body: Container(
         alignment: Alignment.bottomCenter,
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            colors: [
-              Color.fromRGBO(34, 0, 50, 1),
-              Color.fromRGBO(228, 173, 58, 1),
-            ],
-          ),
-        ),
+            // gradient: LinearGradient(
+            //   begin: Alignment.topCenter,
+            //   colors: [
+            //     Colors.white,
+            //     Colors.black,
+            //   ],
+            // ),
+            ),
         child: Stack(
           children: <Widget>[
             // Positioned(
@@ -92,52 +91,27 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             //   right: screenSize.width - 200,
             //   left: 0,
             // ),
-            Positioned.fill(
-              bottom: _layer3Speed * _scrollOffset + 200,
-              right: 0,
-              child: Image.asset(
-                "./assets/Images/up_arrow.png",
-              ),
-            ),
             Positioned(
-              bottom: _layer2Speed * _scrollOffset + 120,
-              right: 0,
-              left: screenSize.width - 100,
-              child: Image.asset(
-                "./assets/Images/sun.png",
-                scale: 10.0,
-              ),
-            ),
-            Positioned(
-              bottom: _layer1Speed * _scrollOffset + 50,
+              top: screenSize.height + (_layer4Speed * _scrollOffset * -1) - 20,
               right: 0,
               left: 0,
-              child: Image.asset("./assets/Images/buildings (1).png"),
-            ),
-            Positioned(
-              top: screenSize.height + (_layer1Speed * _scrollOffset * -1) - 60,
-              right: 0,
-              left: 0,
-              height: screenSize.height + 60,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(34, 0, 50, 1),
-                ),
-              ),
-            ),
-            Positioned.fill(
-              top:
-                  screenSize.height + (_layer1Speed * _scrollOffset * -1) + 350,
-              right: 0,
-              left: 0,
-              bottom: 0,
-              // height: screenSize.height * 0.9,
               child: Image.asset(
-                "./assets/Images/background(4).png",
+                "./assets/Images/semi_background(2).png",
+                // color: Color.fromRGBO(137, 137, 137, 1),
               ),
             ),
             Positioned(
-              top: screenSize.height / 2 - (_layer1Speed - 0.3) * _scrollOffset,
+              bottom: _layer1Speed * _scrollOffset - 150,
+              right: 0,
+              left: 0,
+              child: Image.asset(
+                "./assets/Images/trees(1).png",
+                color: const Color.fromRGBO(137, 137, 137, 1),
+              ),
+            ),
+            Positioned(
+              // top: screenSize.height / 2 - (_layer1Speed - 0.3) * _scrollOffset,
+              top: screenSize.height + (_layer4Speed * _scrollOffset * -1) + 50,
               child: Container(
                 padding: EdgeInsets.only(
                   left: _nullCheckAttributes()!.isEmpty
@@ -150,22 +124,107 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 ),
                 child: Text(
                   attributes != null
-                      ? "Hi Vaibhav"
-                      // ? "Hi ${attributes!['email']!.split('@')[0].substring(0, 14)}!"
-                      // : "Hi ${fileMap['email']!.split('@')[0]};",
+                      ? "Hi ${attributes!['email']!.split('@')[0].substring(0, 14)}!"
                       : fileMap!.isNotEmpty
-                          ? "Hi Vaibhav" //"Hi ${fileMap!['email']!.split('@')[0].substring(0, 14)}!"
+                          ? "Hi ${fileMap!['email']!.split('@')[0].substring(0, 14)}!"
                           : "Hi!",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.balooTamma(
                     textStyle: const TextStyle(
                       fontSize: 45,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                 ),
               ),
             ),
+            Positioned(
+              top:
+                  screenSize.height + (_layer1Speed * _scrollOffset * -1) + 150,
+              right: 0,
+              left: 0,
+              height: screenSize.height + 60,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(137, 137, 137, 1),
+                ),
+              ),
+            ),
+
+            Positioned(
+              bottom: _layer2Speed * _scrollOffset,
+              child: Image.asset(
+                "./assets/Images/background(5).png",
+              ),
+            ),
+            Positioned.fill(
+              bottom: _layer3Speed * _scrollOffset + 150,
+              right: 0,
+              top: 250,
+              child: Text(
+                "{Company Name}",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.balooTamma(
+                  textStyle: const TextStyle(
+                    fontSize: 45,
+                    wordSpacing: 0.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            Positioned.fill(
+              bottom: _layer3Speed * _scrollOffset + 200,
+              right: 0,
+              left: 0,
+              top: -300,
+              child: Hero(
+                tag: "Welcome Text",
+                child: Image.asset(
+                  "./assets/Images/up_arrow.png",
+                  color: const Color.fromRGBO(117, 117, 117, 1),
+                ),
+              ),
+            ),
+            Positioned(
+              top: screenSize.height - 175,
+              right: 0,
+              left: 0,
+              child: Image.asset("./assets/Images/layer-1.png"),
+            ),
+
+            // Positioned(
+            //   bottom: _layer1Speed * _scrollOffset - 20,
+            //   right: 0,
+            //   left: 0,
+            //   child: Image.asset(
+            //     "./assets/Images/grass.png",
+            //     color: Color.fromRGBO(61, 61, 61, 1),
+            //   ),
+            // ),
+
+            // Positioned(
+            //   bottom: _layer2Speed * _scrollOffset,
+            //   right: 0,
+            //   top: 10,
+            //   left: screenSize.width - 200,
+            //   child: Image.asset(
+            //     "./assets/Images/sun.png",
+            //     // scale: 10.0,
+            //     color: Colors.yellowAccent,
+            //   ),
+            // ),
+            // Positioned.fill(
+            //   top:
+            //       screenSize.height + (_layer1Speed * _scrollOffset * -1) + 350,
+            //   right: 0,
+            //   left: 0,
+            //   bottom: 0,
+            //   // height: screenSize.height * 0.9,
+            //   child: Image.asset(
+            //     "./assets/Images/background(4).png",
+            //   ),
+            // ),
 
             Positioned.fill(
               child: SingleChildScrollView(
@@ -183,10 +242,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               height: screenSize.height * 0.9,
               child: Stack(
                 children: [
-                  CarAnim(
-                    animController: animController,
-                    width: screenSize.width,
-                  ),
+                  // CarAnim(
+                  //   animController: animController,
+                  //   width: screenSize.width,
+                  // ),
                   LoginScreen(
                     attributes: attributes ?? fileMap,
                     screenSize: screenSize,
