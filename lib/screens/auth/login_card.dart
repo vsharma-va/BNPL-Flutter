@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'components/errorSnackBar.dart';
-import '../Home/user_info.dart';
+import '../auth/components/auth_functions.dart';
 
 class LoginScreen extends StatefulWidget {
   final Size screenSize;
@@ -42,32 +39,6 @@ class _LoginScreenState extends State<LoginScreen> {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
-  }
-
-  Future<void> googleSignIn() async {
-    try {
-      var res =
-          await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
-      if (res.isSignedIn) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: ((context) => UserForm())));
-      }
-    } on AmplifyException catch (e) {
-      context.showErrorSnackBar(message: e.message);
-    }
-  }
-
-  Future<void> facebookSignUp() async {
-    try {
-      var res =
-          await Amplify.Auth.signInWithWebUI(provider: AuthProvider.facebook);
-      if (res.isSignedIn) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: ((context) => UserForm())));
-      }
-    } on AmplifyException catch (e) {
-      context.showErrorSnackBar(message: e.message);
-    }
   }
 
   Map<String, String>? _nullCheckAttributes() {
@@ -112,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         onPressed: () {
-                          googleSignIn();
+                          AuthFunc.googleSignIn(context: context);
                         },
                       ),
                   if (_nullCheckAttributes()!.isNotEmpty)
@@ -138,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPrimary: Colors.black,
                           ),
                           onPressed: () {
-                            facebookSignUp();
+                            AuthFunc.facebookSignIn(context);
                           },
                         ),
                       ),
@@ -162,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       onPressed: () {
-                        googleSignIn();
+                        AuthFunc.googleSignIn(context: context);
                       },
                     ),
                   if (_nullCheckAttributes()!.isEmpty)
@@ -187,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPrimary: Colors.black,
                         ),
                         onPressed: () {
-                          facebookSignUp();
+                          AuthFunc.facebookSignIn(context);
                         },
                       ),
                     ),

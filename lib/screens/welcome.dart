@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import './login.dart';
 import 'Home/user_info.dart';
+import 'auth/components/errorSnackBar.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({Key? key}) : super(key: key);
@@ -21,9 +22,9 @@ class _WelcomeState extends State<Welcome> {
   Map<String, String> map = {};
   @override
   void initState() {
-    super.initState();
     _checkUserStatus();
     _getStoragePermission();
+    super.initState();
   }
 
   void _getStoragePermission() async {
@@ -55,7 +56,7 @@ class _WelcomeState extends State<Welcome> {
     return map;
   }
 
-  _navigateToLogin() async {
+  void _navigateToLogin() async {
     map = _readToAMap();
     await Future.delayed(const Duration(milliseconds: 6000), () {});
     print(map);
@@ -71,10 +72,14 @@ class _WelcomeState extends State<Welcome> {
 
   Future<void> _checkUserStatus() async {
     try {
-      final user = await Amplify.Auth.getCurrentUser();
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: ((context) => UserForm())));
-    } on AuthException catch (e) {
+      AuthSession user = await Amplify.Auth.fetchAuthSession();
+      if (user.isSignedIn) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: ((context) => UserForm())));
+      } else {
+        _navigateToLogin();
+      }
+    } catch (e) {
       _navigateToLogin();
     }
   }

@@ -125,8 +125,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 child: Text(
                   attributes != null
                       ? "Hi ${attributes!['email']!.split('@')[0].substring(0, 14)}!"
+                      // ? "Hi Vaibhav!"
                       : fileMap!.isNotEmpty
                           ? "Hi ${fileMap!['email']!.split('@')[0].substring(0, 14)}!"
+                          // ? "Hi Vaibhav!"
                           : "Hi!",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.balooTamma(

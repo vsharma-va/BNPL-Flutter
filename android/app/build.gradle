@@ -45,6 +45,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.bnpl"
         minSdkVersion 21
+        targetSdkVersion 31
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -58,7 +59,7 @@ android {
             storePassword 'Ihatepassword1@3'
         }
         release {
-           keyAlias 'androiddebug'
+            keyAlias 'androiddebug'
             storeFile file("debugkey.jks")
             keyPassword 'Ihatepassword1@3'
             storePassword 'Ihatepassword1@3'

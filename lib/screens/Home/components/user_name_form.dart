@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../auth/components/form_fields.dart';
+import '../../auth/components/form_fields.dart';
 
 class UserNameForm extends StatelessWidget {
   UserNameForm(
@@ -15,10 +15,28 @@ class UserNameForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          "Let's Get You Set Up",
-          style: GoogleFonts.balooTamma(
-            textStyle: const TextStyle(color: Colors.white, fontSize: 30),
+        Padding(
+          padding: const EdgeInsets.all(0),
+          child: Text(
+            "Tell Us Your Name",
+            style: GoogleFonts.balooTamma(
+              textStyle: const TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(0),
+          child: Text(
+            "Be Exact As Per Your Bank Records",
+            style: GoogleFonts.balooTamma(
+              textStyle: const TextStyle(
+                color: Colors.white70,
+                fontSize: 20,
+              ),
+            ),
           ),
         ),
         Padding(
@@ -27,7 +45,7 @@ class UserNameForm extends StatelessWidget {
             controller: firstNameController,
             iconData: FontAwesomeIcons.solidUserCircle,
             labelText: "First Name",
-            hintText: "Enter your first name",
+            hintText: "eg. John",
             emptyErrorBool: true,
             emptyErrorString: "First Name field is empty",
             minLengthErrorBool: false,
@@ -41,7 +59,7 @@ class UserNameForm extends StatelessWidget {
           controller: lastNameController,
           iconData: FontAwesomeIcons.solidUserCircle,
           labelText: "Last Name",
-          hintText: "Enter your last name",
+          hintText: "eg. Smith",
           emptyErrorBool: true,
           emptyErrorString: "Last Name field is empty",
           minLengthErrorBool: false,

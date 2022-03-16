@@ -7,7 +7,6 @@ import 'package:aws_lambda_api/lambda-2015-03-31.dart' as lambda;
 import 'package:google_fonts/google_fonts.dart';
 
 import '../auth/components/errorSnackBar.dart';
-import '../components/file_read_write.dart';
 
 class Temp extends StatefulWidget {
   @override
@@ -125,13 +124,24 @@ class _TempState extends State<Temp> {
       backgroundColor: const Color.fromRGBO(53, 56, 57, 1),
       body: Container(
         alignment: Alignment.center,
-        child: Text(
-          "Finished !",
-          style: GoogleFonts.balooTamma(
-            textStyle: const TextStyle(
-              color: Color.fromRGBO(225, 200, 87, 1),
-              fontSize: 35,
-            ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Finished !",
+                style: GoogleFonts.balooTamma(
+                  textStyle: const TextStyle(
+                    color: Color.fromRGBO(225, 200, 87, 1),
+                    fontSize: 35,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: what,
+                child: Text("Signout"),
+              ),
+            ],
           ),
         ),
       ),

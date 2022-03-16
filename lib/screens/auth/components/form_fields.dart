@@ -54,7 +54,7 @@ class FormFields extends StatelessWidget {
               fontWeight: FontWeight.bold,
               color: Color.fromRGBO(225, 200, 87, 1)),
         ),
-        hintText: '$hintText*',
+        hintText: '$hintText',
         hintStyle: GoogleFonts.balooTamma(
           textStyle: const TextStyle(
               fontSize: 15,

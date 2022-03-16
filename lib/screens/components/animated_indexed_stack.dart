@@ -24,7 +24,7 @@ class _AnimatedIndexedStackState extends State<AnimatedIndexedStack>
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 150),
+      duration: Duration(milliseconds: 300),
     );
     _animation = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -63,7 +63,7 @@ class _AnimatedIndexedStackState extends State<AnimatedIndexedStack>
         return Opacity(
           opacity: _controller.value,
           child: Transform.scale(
-            scale: 1.015 - (_controller.value * 0.015),
+            scale: 3 - (_controller.value * 2),
             child: child,
           ),
         );

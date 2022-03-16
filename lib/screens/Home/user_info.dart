@@ -5,6 +5,8 @@ import './components/user_name_form.dart';
 import '../components/animated_indexed_stack.dart';
 import './components/pan_card_form.dart';
 import '../Home/temp.dart';
+import './components/profession_form.dart';
+import '../auth/components/auth_functions.dart';
 
 class UserForm extends StatefulWidget {
   UserForm({Key? key}) : super(key: key);
@@ -21,6 +23,7 @@ class _UserFormState extends State<UserForm> {
   final _userNameFormKey = GlobalKey<FormState>();
   final _panCardFormKey = GlobalKey<FormState>();
   final int totalNumberOfForms = 2;
+  Map<String, String> userAttributes = {};
 
   var _formIndex = 0;
 
@@ -29,10 +32,37 @@ class _UserFormState extends State<UserForm> {
       _formIndex++;
     });
     if (_formIndex == totalNumberOfForms) {
+      // List<int> lambdaParameters = '{
+      //   "name": "insertcUser",
+      //   "userId": userAttributes["sub"].toString(),
+      //   "userName": _firstNameController.text + " " + _lastNameController.text,
+      //   "userEmail": userAttributes["email"].toString(),
+      //   "userMobileNo": "NULL",
+      //   "userAge": "NULL",
+      //   "userCast": "NULL"
+      // }'.codeUnits;
+      print(userAttributes["sub"].toString());
+      print(_firstNameController.text + " " + _lastNameController.text);
+      print(userAttributes["email"].toString());
+      List<int> lambdaParameters =
+          '{"name": "insertcUser",  "userId": "${userAttributes["sub"].toString()}", "userName": "${(_firstNameController.text + " " + _lastNameController.text)}", "userEmail": "${userAttributes["email"]}", "userMobileNo": "1234567890", "userAge": "0", "userCast": "Empty"}'
+              .codeUnits;
+      AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: ((context) => Temp())));
     }
     print(_formIndex);
+  }
+
+  @override
+  void initState() {
+    var x = AuthFunc.getUserAttributes(context: context);
+    x.then(
+      (value) {
+        userAttributes = value;
+      },
+    );
+    super.initState();
   }
 
   @override
@@ -68,11 +98,7 @@ class _UserFormState extends State<UserForm> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          if (_userNameFormKey.currentState!.validate()) {
-                            changeFormIndex(context);
-                          }
-                        },
+                        onPressed: _continueButtonLogic,
                         child: Text(
                           "Continue",
                           style: GoogleFonts.balooTamma(
@@ -88,8 +114,32 @@ class _UserFormState extends State<UserForm> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ProfessionForm(),
+                        ElevatedButton(
+                          onPressed: () {
+                            changeFormIndex(context);
+                          },
+                          child: Text(
+                            "Continue",
+                            style: GoogleFonts.balooTamma(
+                              textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 25,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Form(
                         key: _panCardFormKey,
@@ -98,11 +148,7 @@ class _UserFormState extends State<UserForm> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          if (_panCardFormKey.currentState!.validate()) {
-                            changeFormIndex(context);
-                          }
-                        },
+                        onPressed: _continueButtonLogic,
                         child: Text(
                           "Continue",
                           style: GoogleFonts.balooTamma(
@@ -122,5 +168,11 @@ class _UserFormState extends State<UserForm> {
         ),
       ),
     );
+  }
+
+  void _continueButtonLogic() {
+    if (_userNameFormKey.currentState!.validate()) {
+      changeFormIndex(context);
+    }
   }
 }
