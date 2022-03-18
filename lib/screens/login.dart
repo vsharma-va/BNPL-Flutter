@@ -75,14 +75,15 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       body: Container(
         alignment: Alignment.bottomCenter,
         decoration: const BoxDecoration(
-            // gradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   colors: [
-            //     Colors.white,
-            //     Colors.black,
-            //   ],
-            // ),
-            ),
+          color: Color.fromRGBO(27, 26, 23, 1),
+          // gradient: LinearGradient(
+          //   begin: Alignment.topCenter,
+          //   colors: [
+          //     Colors.white,
+          //     Colors.black,
+          //   ],
+          // ),
+        ),
         child: Stack(
           children: <Widget>[
             // Positioned(
@@ -92,13 +93,19 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             //   left: 0,
             // ),
             Positioned(
-              top: screenSize.height + (_layer4Speed * _scrollOffset * -1) - 20,
+              top: screenSize.height + (_layer4Speed * _scrollOffset * -1),
               right: 0,
               left: 0,
-              child: Image.asset(
-                "./assets/Images/semi_background(2).png",
-                // color: Color.fromRGBO(137, 137, 137, 1),
+              height: screenSize.height,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(27, 26, 23, 1),
+                ),
               ),
+              // child: Image.asset(
+              //   "./assets/Images/semi_background(2).png",
+              // color: Color.fromRGBO(137, 137, 137, 1),
+              // ),
             ),
             Positioned(
               bottom: _layer1Speed * _scrollOffset - 150,
@@ -106,7 +113,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               left: 0,
               child: Image.asset(
                 "./assets/Images/trees(1).png",
-                color: const Color.fromRGBO(137, 137, 137, 1),
+                color: const Color.fromRGBO(228, 88, 38, 1),
               ),
             ),
             Positioned(
@@ -134,7 +141,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   style: GoogleFonts.balooTamma(
                     textStyle: const TextStyle(
                       fontSize: 45,
-                      color: Colors.black,
+                      color: Color.fromRGBO(240, 165, 0, 1),
                     ),
                   ),
                 ),
@@ -148,15 +155,17 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               height: screenSize.height + 60,
               child: Container(
                 decoration: const BoxDecoration(
-                  color: Color.fromRGBO(137, 137, 137, 1),
+                  color: Color.fromRGBO(228, 88, 38, 1),
                 ),
               ),
             ),
 
             Positioned(
               bottom: _layer2Speed * _scrollOffset,
-              child: Image.asset(
-                "./assets/Images/background(5).png",
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(27, 26, 23, 1),
+                ),
               ),
             ),
             Positioned.fill(
@@ -170,7 +179,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   textStyle: const TextStyle(
                     fontSize: 45,
                     wordSpacing: 0.0,
-                    color: Colors.black,
+                    color: Color.fromRGBO(240, 165, 0, 1),
                   ),
                 ),
               ),
@@ -184,16 +193,16 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 tag: "Welcome Text",
                 child: Image.asset(
                   "./assets/Images/up_arrow.png",
-                  color: const Color.fromRGBO(117, 117, 117, 1),
+                  color: const Color.fromRGBO(228, 88, 38, 1),
                 ),
               ),
             ),
-            Positioned(
-              top: screenSize.height - 175,
-              right: 0,
-              left: 0,
-              child: Image.asset("./assets/Images/layer-1.png"),
-            ),
+            // Positioned(
+            //   top: screenSize.height - 175,
+            //   right: 0,
+            //   left: 0,
+            //   child: Image.asset("./assets/Images/layer-1.png"),
+            // ),
 
             // Positioned(
             //   bottom: _layer1Speed * _scrollOffset - 20,

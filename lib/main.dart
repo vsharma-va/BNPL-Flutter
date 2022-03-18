@@ -43,7 +43,7 @@ class _BNPLState extends State<BNPL> {
     return MaterialApp(
       theme: ThemeData(
         colorScheme: ThemeData().colorScheme.copyWith(
-              primary: const Color.fromRGBO(225, 200, 87, 1),
+              primary: const Color.fromRGBO(240, 165, 0, 1),
             ),
       ),
       home: const Splash(),

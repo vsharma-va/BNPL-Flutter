@@ -32,18 +32,6 @@ class _UserFormState extends State<UserForm> {
       _formIndex++;
     });
     if (_formIndex == totalNumberOfForms) {
-      // List<int> lambdaParameters = '{
-      //   "name": "insertcUser",
-      //   "userId": userAttributes["sub"].toString(),
-      //   "userName": _firstNameController.text + " " + _lastNameController.text,
-      //   "userEmail": userAttributes["email"].toString(),
-      //   "userMobileNo": "NULL",
-      //   "userAge": "NULL",
-      //   "userCast": "NULL"
-      // }'.codeUnits;
-      print(userAttributes["sub"].toString());
-      print(_firstNameController.text + " " + _lastNameController.text);
-      print(userAttributes["email"].toString());
       List<int> lambdaParameters =
           '{"name": "insertcUser",  "userId": "${userAttributes["sub"].toString()}", "userName": "${(_firstNameController.text + " " + _lastNameController.text)}", "userEmail": "${userAttributes["email"]}", "userMobileNo": "1234567890", "userAge": "0", "userCast": "Empty"}'
               .codeUnits;
@@ -51,7 +39,6 @@ class _UserFormState extends State<UserForm> {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: ((context) => Temp())));
     }
-    print(_formIndex);
   }
 
   @override
@@ -69,16 +56,19 @@ class _UserFormState extends State<UserForm> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color.fromRGBO(67, 67, 67, 1),
+      backgroundColor: const Color.fromRGBO(27, 26, 23, 1),
       body: Container(
         child: Stack(
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(175),
-              ),
-              child: Image.asset(
-                './assets/Images/background(5).png',
+            Positioned(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(175),
+                ),
+                child: Image.asset(
+                  './assets/Images/trees(1).png',
+                  color: const Color.fromRGBO(228, 88, 38, 1),
+                ),
               ),
             ),
             AnimatedIndexedStack(
@@ -98,6 +88,9 @@ class _UserFormState extends State<UserForm> {
                         ),
                       ),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          onPrimary: Color.fromRGBO(27, 26, 23, 1),
+                        ),
                         onPressed: _continueButtonLogic,
                         child: Text(
                           "Continue",
@@ -120,6 +113,9 @@ class _UserFormState extends State<UserForm> {
                       children: [
                         ProfessionForm(),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            onPrimary: Color.fromRGBO(27, 26, 23, 1),
+                          ),
                           onPressed: () {
                             changeFormIndex(context);
                           },

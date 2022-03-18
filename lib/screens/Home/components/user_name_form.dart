@@ -21,7 +21,7 @@ class UserNameForm extends StatelessWidget {
             "Tell Us Your Name",
             style: GoogleFonts.balooTamma(
               textStyle: const TextStyle(
-                color: Colors.white,
+                color: Color.fromRGBO(240, 165, 0, 1),
                 fontSize: 30,
               ),
             ),
@@ -33,7 +33,7 @@ class UserNameForm extends StatelessWidget {
             "Be Exact As Per Your Bank Records",
             style: GoogleFonts.balooTamma(
               textStyle: const TextStyle(
-                color: Colors.white70,
+                color: Color.fromRGBO(228, 88, 38, 1),
                 fontSize: 20,
               ),
             ),

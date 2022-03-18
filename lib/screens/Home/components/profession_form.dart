@@ -15,7 +15,7 @@ class ProfessionForm extends StatelessWidget {
           "Tell us more about yourself",
           style: GoogleFonts.balooTamma(
             textStyle: const TextStyle(
-              color: Colors.white,
+              color: Color.fromRGBO(240, 165, 0, 1),
               fontSize: 25,
             ),
           ),
@@ -24,7 +24,7 @@ class ProfessionForm extends StatelessWidget {
           "Choose your current profession",
           style: GoogleFonts.balooTamma(
             textStyle: const TextStyle(
-              color: Colors.white70,
+              color: Color.fromRGBO(228, 88, 38, 1),
               fontSize: 20,
             ),
           ),

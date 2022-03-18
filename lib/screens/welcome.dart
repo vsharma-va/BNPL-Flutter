@@ -90,13 +90,7 @@ class _WelcomeState extends State<Welcome> {
       body: Container(
         alignment: Alignment.center,
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            colors: [
-              Color.fromRGBO(205, 205, 205, 1),
-              Color.fromRGBO(67, 67, 67, 1),
-            ],
-          ),
+          color: Color.fromRGBO(27, 26, 23, 1),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -108,12 +102,14 @@ class _WelcomeState extends State<Welcome> {
                 style: GoogleFonts.balooTamma(
                   textStyle: const TextStyle(
                     fontSize: 45,
-                    color: Colors.white,
+                    color: Color.fromRGBO(240, 165, 0, 1),
                   ),
                 ),
               ),
             ),
-            const Center(child: CircularProgressIndicator(color: Colors.white)),
+            const Center(
+                child: CircularProgressIndicator(
+                    color: Color.fromRGBO(228, 88, 38, 1))),
           ],
         ),
       ),

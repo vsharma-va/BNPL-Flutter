@@ -66,8 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (attributes!['identities']!.contains('Google'))
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: Colors.black,
+                          primary: const Color.fromRGBO(27, 26, 23, 1),
+                          onPrimary: const Color.fromRGBO(240, 165, 0, 1),
                         ),
                         icon: const FaIcon(
                           FontAwesomeIcons.google,
@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: GoogleFonts.balooTamma(
                             textStyle: const TextStyle(
                               fontSize: 20,
-                              color: Colors.black,
+                              color: Color.fromRGBO(240, 165, 0, 1),
                             ),
                           ),
                         ),
@@ -100,13 +100,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: GoogleFonts.balooTamma(
                               textStyle: const TextStyle(
                                 fontSize: 20,
-                                color: Colors.black,
+                                color: Color.fromRGBO(240, 165, 0, 1),
                               ),
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            onPrimary: Colors.black,
+                            primary: const Color.fromRGBO(27, 26, 23, 1),
+                            onPrimary: const Color.fromRGBO(240, 165, 0, 1),
                           ),
                           onPressed: () {
                             AuthFunc.facebookSignIn(context);
@@ -116,8 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (_nullCheckAttributes()!.isEmpty)
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
+                        primary: const Color.fromRGBO(27, 26, 23, 1),
+                        onPrimary: const Color.fromRGBO(240, 165, 0, 1),
                       ),
                       icon: const FaIcon(
                         FontAwesomeIcons.google,
@@ -128,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: GoogleFonts.balooTamma(
                           textStyle: const TextStyle(
                             fontSize: 20,
-                            color: Colors.black,
+                            color: Color.fromRGBO(240, 165, 0, 1),
                           ),
                         ),
                       ),
@@ -149,13 +149,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: GoogleFonts.balooTamma(
                             textStyle: const TextStyle(
                               fontSize: 20,
-                              color: Colors.black,
+                              color: Color.fromRGBO(240, 165, 0, 1),
                             ),
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: Colors.black,
+                          primary: const Color.fromRGBO(27, 26, 23, 1),
+                          onPrimary: const Color.fromRGBO(240, 165, 0, 1),
                         ),
                         onPressed: () {
                           AuthFunc.facebookSignIn(context);

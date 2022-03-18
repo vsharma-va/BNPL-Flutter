@@ -40,19 +40,25 @@ class FormFields extends StatelessWidget {
           passwordBool ? TextInputType.text : TextInputType.emailAddress,
       style: GoogleFonts.balooTamma(
         textStyle: const TextStyle(
-            fontSize: 20, fontWeight: FontWeight.normal, color: Colors.white),
+            fontSize: 20,
+            fontWeight: FontWeight.normal,
+            color: Color.fromRGBO(228, 88, 38, 1)),
       ),
       decoration: InputDecoration(
         labelText: '$labelText*',
         labelStyle: GoogleFonts.balooTamma(
           textStyle: const TextStyle(
-              fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+              // field name colour
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(228, 88, 38, 1)),
         ),
         floatingLabelStyle: GoogleFonts.balooTamma(
           textStyle: const TextStyle(
+              // field name colour when the text field is selected
               fontSize: 15,
               fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(225, 200, 87, 1)),
+              color: Color.fromRGBO(228, 88, 38, 1)),
         ),
         hintText: '$hintText',
         hintStyle: GoogleFonts.balooTamma(
@@ -67,13 +73,14 @@ class FormFields extends StatelessWidget {
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             width: 3,
-            color: Colors.white,
+            // default field outline colour
+            color: Color.fromARGB(255, 255, 205, 98),
           ),
         ),
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             width: 3,
-            color: Color.fromRGBO(225, 200, 87, 1),
+            color: Color.fromRGBO(240, 165, 0, 1),
           ),
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(15),
