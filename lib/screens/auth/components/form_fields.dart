@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../theme_data.dart' as theme;
+
 class FormFields extends StatelessWidget {
   FormFields({
     required this.controller,
@@ -42,7 +44,7 @@ class FormFields extends StatelessWidget {
         textStyle: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.normal,
-            color: Color.fromRGBO(228, 88, 38, 1)),
+            color: theme.textColor),
       ),
       decoration: InputDecoration(
         labelText: '$labelText*',
@@ -51,14 +53,14 @@ class FormFields extends StatelessWidget {
               // field name colour
               fontSize: 15,
               fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(228, 88, 38, 1)),
+              color: theme.secondaryColor),
         ),
         floatingLabelStyle: GoogleFonts.balooTamma(
           textStyle: const TextStyle(
               // field name colour when the text field is selected
               fontSize: 15,
               fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(228, 88, 38, 1)),
+              color: theme.secondaryColor),
         ),
         hintText: '$hintText',
         hintStyle: GoogleFonts.balooTamma(
@@ -74,13 +76,13 @@ class FormFields extends StatelessWidget {
           borderSide: BorderSide(
             width: 3,
             // default field outline colour
-            color: Color.fromARGB(255, 255, 205, 98),
+            color: theme.primaryColor,
           ),
         ),
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             width: 3,
-            color: Color.fromRGBO(240, 165, 0, 1),
+            color: theme.secondaryColor,
           ),
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(15),

@@ -5,6 +5,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'amplifyconfiguration.dart';
 import 'screens/splash.dart';
 import './screens/auth/components/errorSnackBar.dart';
+import './theme_data.dart' as theme;
 
 void main() {
   runApp(BNPL());
@@ -43,7 +44,7 @@ class _BNPLState extends State<BNPL> {
     return MaterialApp(
       theme: ThemeData(
         colorScheme: ThemeData().colorScheme.copyWith(
-              primary: const Color.fromRGBO(240, 165, 0, 1),
+              primary: theme.secondaryColor,
             ),
       ),
       home: const Splash(),

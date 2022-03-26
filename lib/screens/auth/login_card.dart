@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../auth/components/auth_functions.dart';
+import '../../theme_data.dart' as theme;
 
 class LoginScreen extends StatefulWidget {
   final Size screenSize;
@@ -52,22 +53,33 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Positioned(
       top: (screenSize.height / 2) - (screenSize.height * 0.5) / 2,
-      left: screenSize.width / 2 - 168,
+      left: 20,
       height: screenSize.height * 0.5,
       width: screenSize.width - 40,
       child: Center(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              alignment: Alignment.bottomLeft,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (_nullCheckAttributes()!.isNotEmpty)
                     if (attributes!['identities']!.contains('Google'))
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color.fromRGBO(27, 26, 23, 1),
-                          onPrimary: const Color.fromRGBO(240, 165, 0, 1),
+                          // primary: theme.backgroundColor,
+                          primary: Colors.white,
+                          onPrimary: theme.secondaryColor,
+                          minimumSize: Size(screenSize.width - 10, 55),
+                          // shadowColor: theme.secondaryColor,
+                          shadowColor: Colors.black,
+                          enableFeedback: true,
+                          elevation: 15,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
                         ),
                         icon: const FaIcon(
                           FontAwesomeIcons.google,
@@ -78,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: GoogleFonts.balooTamma(
                             textStyle: const TextStyle(
                               fontSize: 20,
-                              color: Color.fromRGBO(240, 165, 0, 1),
+                              color: theme.textColor,
                             ),
                           ),
                         ),
@@ -100,13 +112,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: GoogleFonts.balooTamma(
                               textStyle: const TextStyle(
                                 fontSize: 20,
-                                color: Color.fromRGBO(240, 165, 0, 1),
+                                color: theme.textColor,
                               ),
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: const Color.fromRGBO(27, 26, 23, 1),
-                            onPrimary: const Color.fromRGBO(240, 165, 0, 1),
+                            primary: theme.backgroundColor,
+                            onPrimary: theme.secondaryColor,
+                            minimumSize: Size(screenSize.width - 10, 55),
+                            shadowColor: Colors.black,
+                            enableFeedback: true,
+                            elevation: 15,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
                           ),
                           onPressed: () {
                             AuthFunc.facebookSignIn(context);
@@ -116,8 +135,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (_nullCheckAttributes()!.isEmpty)
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        primary: const Color.fromRGBO(27, 26, 23, 1),
-                        onPrimary: const Color.fromRGBO(240, 165, 0, 1),
+                        primary: theme.backgroundColor,
+                        onPrimary: theme.secondaryColor,
+                        minimumSize: Size(screenSize.width - 10, 55),
+                        shadowColor: Colors.black,
+                        enableFeedback: true,
+                        elevation: 15,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
                       ),
                       icon: const FaIcon(
                         FontAwesomeIcons.google,
@@ -128,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: GoogleFonts.balooTamma(
                           textStyle: const TextStyle(
                             fontSize: 20,
-                            color: Color.fromRGBO(240, 165, 0, 1),
+                            color: theme.textColor,
                           ),
                         ),
                       ),
@@ -136,6 +162,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         AuthFunc.googleSignIn(context: context);
                       },
                     ),
+                  SizedBox(
+                    height: 12,
+                  ),
                   if (_nullCheckAttributes()!.isEmpty)
                     Container(
                       alignment: Alignment.bottomCenter,
@@ -149,13 +178,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: GoogleFonts.balooTamma(
                             textStyle: const TextStyle(
                               fontSize: 20,
-                              color: Color.fromRGBO(240, 165, 0, 1),
+                              color: theme.textColor,
                             ),
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: const Color.fromRGBO(27, 26, 23, 1),
-                          onPrimary: const Color.fromRGBO(240, 165, 0, 1),
+                          primary: theme.backgroundColor,
+                          onPrimary: theme.secondaryColor,
+                          minimumSize: Size(screenSize.width - 10, 55),
+                          shadowColor: Colors.black,
+                          enableFeedback: true,
+                          elevation: 15,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
                         ),
                         onPressed: () {
                           AuthFunc.facebookSignIn(context);

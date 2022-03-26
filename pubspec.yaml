@@ -48,6 +48,8 @@ dev_dependencies:
   amazon_cognito_identity_dart_2: ^1.0.5
   aws_lambda_api: ^1.2.0
   permission_handler: ^9.2.0
+  location: ^4.2.0
+  geocoding: ^2.0.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -67,9 +69,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/icons/
-    - assets/animations/
-    - assets/Images/
+    - ./assets/icons/
+    - ./assets/animations/
+    - ./assets/Images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -7,6 +7,7 @@ import './components/pan_card_form.dart';
 import '../Home/temp.dart';
 import './components/profession_form.dart';
 import '../auth/components/auth_functions.dart';
+import '../../theme_data.dart' as theme;
 
 class UserForm extends StatefulWidget {
   UserForm({Key? key}) : super(key: key);
@@ -55,76 +56,61 @@ class _UserFormState extends State<UserForm> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(27, 26, 23, 1),
-      body: Container(
-        child: Stack(
-          children: [
-            Positioned(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(175),
-                ),
-                child: Image.asset(
-                  './assets/Images/trees(1).png',
-                  color: const Color.fromRGBO(228, 88, 38, 1),
-                ),
-              ),
-            ),
-            AnimatedIndexedStack(
-              key: globalKey,
-              index: _formIndex,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Form(
-                        key: _userNameFormKey,
-                        child: UserNameForm(
-                          firstNameController: _firstNameController,
-                          lastNameController: _lastNameController,
-                        ),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          onPrimary: Color.fromRGBO(27, 26, 23, 1),
-                        ),
-                        onPressed: _continueButtonLogic,
-                        child: Text(
-                          "Continue",
-                          style: GoogleFonts.balooTamma(
-                            textStyle: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: theme.backgroundColor,
+        body: Container(
+          child: Stack(
+            children: [
+              Positioned(
+                top: -5,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(175),
+                  ),
+                  child: Image.asset(
+                    './assets/Images/sideImgRotated.png',
+                    // color: theme.secondaryColor,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Center(
+              ),
+              AnimatedIndexedStack(
+                key: globalKey,
+                index: _formIndex,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ProfessionForm(),
+                        Form(
+                          key: _userNameFormKey,
+                          child: UserNameForm(
+                            firstNameController: _firstNameController,
+                            lastNameController: _lastNameController,
+                          ),
+                        ),
+                        SizedBox(height: 55),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            onPrimary: Color.fromRGBO(27, 26, 23, 1),
+                            primary: theme.primaryColor,
+                            onPrimary: theme.secondaryColor,
+                            minimumSize: Size(screenSize.width - 10, 55),
+                            shadowColor: Colors.black,
+                            enableFeedback: true,
+                            elevation: 15,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
                           ),
-                          onPressed: () {
-                            changeFormIndex(context);
-                          },
+                          onPressed: _continueButtonLogic,
                           child: Text(
                             "Continue",
                             style: GoogleFonts.balooTamma(
-                              textStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 25,
+                              textStyle: const TextStyle(
+                                color: theme.textColor,
+                                fontSize: 20,
                               ),
                             ),
                           ),
@@ -132,35 +118,71 @@ class _UserFormState extends State<UserForm> {
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      Form(
-                        key: _panCardFormKey,
-                        child: PanCardForm(
-                          panCardController: _panCardController,
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const ProfessionForm(),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: theme.primaryColor,
+                              onPrimary: theme.secondaryColor,
+                              minimumSize: Size(screenSize.width - 10, 55),
+                              shadowColor: Colors.black,
+                              enableFeedback: true,
+                              elevation: 15,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                            ),
+                            onPressed: () {
+                              changeFormIndex(context);
+                            },
+                            child: Text(
+                              "Continue",
+                              style: GoogleFonts.balooTamma(
+                                textStyle: const TextStyle(
+                                  color: theme.textColor,
+                                  fontSize: 25,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      ElevatedButton(
-                        onPressed: _continueButtonLogic,
-                        child: Text(
-                          "Continue",
-                          style: GoogleFonts.balooTamma(
-                            textStyle: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Form(
+                          key: _panCardFormKey,
+                          child: PanCardForm(
+                            panCardController: _panCardController,
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: _continueButtonLogic,
+                          child: Text(
+                            "Continue",
+                            style: GoogleFonts.balooTamma(
+                              textStyle: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

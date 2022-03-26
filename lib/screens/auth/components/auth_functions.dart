@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -7,6 +8,8 @@ import 'package:aws_lambda_api/lambda-2015-03-31.dart' as lambda;
 
 import '../../Home/user_info.dart';
 import 'errorSnackBar.dart';
+import '../../login.dart';
+import '../../components/file_read_write.dart';
 
 class AuthFunc {
   static Future<void> googleSignIn({required BuildContext context}) async {
@@ -49,8 +52,42 @@ class AuthFunc {
     return attributes;
   }
 
+  static Future<void> signOut({required BuildContext context}) async {
+    try {
+      var futureUserAttributes = getUserAttributes(context: context);
+      Map<String, String> userAttributes = {};
+      futureUserAttributes.then((value) {
+        userAttributes = value;
+        var fileString = '';
+        if (userAttributes['identities']!.contains('Google')) {
+          fileString = userAttributes['email'].toString() + ' ' + 'Google';
+        } else {
+          fileString = userAttributes['email'].toString() + ' ' + 'Facebook';
+        }
+
+        writeDetails(fileString);
+      });
+
+      await Amplify.Auth.signOut(
+          options: const SignOutOptions(globalSignOut: true));
+      log('success');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Login(
+            attributes: userAttributes,
+          ),
+        ),
+      );
+    } on AmplifyException catch (e) {
+      context.showErrorSnackBar(message: e.message);
+    }
+  }
+
   static Future<String> crudFuncOnDb(
-      {required List<int> parameters, required BuildContext context}) async {
+      {required List<int> parameters,
+      required BuildContext context,
+      String funcName = 'undefined'}) async {
     var returnString = '';
     try {
       var session = await Amplify.Auth.fetchAuthSession(
@@ -74,16 +111,20 @@ class AuthFunc {
             payload: Uint8List.fromList(parameters));
 
         returnString = String.fromCharCodes(lambdaResponse.payload!);
-        print(returnString);
+        log(returnString);
+        // context.showErrorSnackBar(
+        //     message: "attributeName: ${funcName} Success !!");
         return returnString;
       } catch (e) {
-        // context.showErrorSnackBar(message: e.toString());
-        print(e);
+        // context.showErrorSnackBar(
+        //     message: e.toString() + ' at attributeName: $funcName Faliure');
+        log(e.toString());
         return 'false';
       }
     } on AuthException catch (e) {
-      // context.showErrorSnackBar(message: e.message);
-      print(e);
+      // context.showErrorSnackBar(
+      //     message: e.message + ' at attributeName: $funcName Faliure');
+      log(e.toString());
       return 'false';
     }
   }

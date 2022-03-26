@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../auth/components/form_fields.dart';
+import '../../../theme_data.dart' as theme;
 
 class UserNameForm extends StatelessWidget {
   UserNameForm(
@@ -21,7 +22,7 @@ class UserNameForm extends StatelessWidget {
             "Tell Us Your Name",
             style: GoogleFonts.balooTamma(
               textStyle: const TextStyle(
-                color: Color.fromRGBO(240, 165, 0, 1),
+                color: theme.textColor,
                 fontSize: 30,
               ),
             ),
@@ -33,7 +34,7 @@ class UserNameForm extends StatelessWidget {
             "Be Exact As Per Your Bank Records",
             style: GoogleFonts.balooTamma(
               textStyle: const TextStyle(
-                color: Color.fromRGBO(228, 88, 38, 1),
+                color: theme.secondaryColor,
                 fontSize: 20,
               ),
             ),

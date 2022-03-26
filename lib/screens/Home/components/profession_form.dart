@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../theme_data.dart' as theme;
+
 class ProfessionForm extends StatelessWidget {
   const ProfessionForm({Key? key}) : super(key: key);
 
@@ -15,7 +17,7 @@ class ProfessionForm extends StatelessWidget {
           "Tell us more about yourself",
           style: GoogleFonts.balooTamma(
             textStyle: const TextStyle(
-              color: Color.fromRGBO(240, 165, 0, 1),
+              color: theme.textColor,
               fontSize: 25,
             ),
           ),
@@ -24,7 +26,7 @@ class ProfessionForm extends StatelessWidget {
           "Choose your current profession",
           style: GoogleFonts.balooTamma(
             textStyle: const TextStyle(
-              color: Color.fromRGBO(228, 88, 38, 1),
+              color: theme.secondaryColor,
               fontSize: 20,
             ),
           ),
@@ -37,14 +39,14 @@ class ProfessionForm extends StatelessWidget {
             ),
             icon: const Icon(
               FontAwesomeIcons.bookOpen,
-              color: Colors.black87,
+              color: theme.textColor,
             ),
             onPressed: () {},
             label: Text(
               "Student",
               style: GoogleFonts.balooTamma(
                 textStyle: const TextStyle(
-                  color: Colors.black87,
+                  color: theme.textColor,
                   fontSize: 25,
                 ),
               ),
@@ -59,14 +61,14 @@ class ProfessionForm extends StatelessWidget {
             ),
             icon: const Icon(
               FontAwesomeIcons.cashRegister,
-              color: Colors.black87,
+              color: theme.textColor,
             ),
             onPressed: () {},
             label: Text(
               "Salaried",
               style: GoogleFonts.balooTamma(
                 textStyle: const TextStyle(
-                  color: Colors.black87,
+                  color: theme.textColor,
                   fontSize: 25,
                 ),
               ),
@@ -81,14 +83,14 @@ class ProfessionForm extends StatelessWidget {
             ),
             icon: const Icon(
               FontAwesomeIcons.building,
-              color: Colors.black87,
+              color: theme.textColor,
             ),
             onPressed: () {},
             label: Text(
               "Self Employed",
               style: GoogleFonts.balooTamma(
                 textStyle: const TextStyle(
-                  color: Colors.black87,
+                  color: theme.textColor,
                   fontSize: 25,
                 ),
               ),

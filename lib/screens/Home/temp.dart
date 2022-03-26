@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:bnpl/screens/login.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +7,8 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:aws_lambda_api/lambda-2015-03-31.dart' as lambda;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:location/location.dart' as locationService;
 
 import '../auth/components/errorSnackBar.dart';
 import '../auth/components/auth_functions.dart';
@@ -27,6 +29,9 @@ class _TempState extends State<Temp> {
   Map<String, String> userAttributes = {};
   TextEditingController phoneController = TextEditingController();
   TextEditingController instSernoController = TextEditingController();
+  dynamic currentLocation = '';
+  List<Placemark> placemarks = [];
+  var location = locationService.Location();
 
   Future<void> signUp() async {
     try {
@@ -58,9 +63,15 @@ class _TempState extends State<Temp> {
         please();
       }
       await Amplify.Auth.signOut(options: SignOutOptions(globalSignOut: true));
-      print('success');
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: ((context) => Login(attributes: userAttributes))));
+      log('success');
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Login(
+                    attributes: userAttributes,
+                  )));
+      // Navigator.of(context).pushReplacement(MaterialPageRoute(
+      //     builder: ((context) => Login(attributes: userAttributes))));
     } on AmplifyException catch (e) {
       context.showErrorSnackBar(message: e.message);
     }
@@ -95,21 +106,58 @@ class _TempState extends State<Temp> {
 
         return returnString;
       } catch (e) {
-        print(e);
+        log(e.toString());
         return 'false';
       }
     } on AuthException catch (e) {
-      print(e);
+      log(e.toString());
       return 'false';
     }
   }
 
+  Future<void> _getLocation() async {
+    currentLocation = await location.getLocation();
+    List<Placemark> f = await placemarkFromCoordinates(
+        double.parse(currentLocation.latitude.toString()),
+        double.parse(currentLocation.longitude.toString()));
+    setState(() {
+      placemarks = f;
+    });
+  }
+
+  Future<void> _saveLocationToDb() async {
+    await _getLocation();
+    Map<String, String> userAttributes = {};
+    var x = AuthFunc.getUserAttributes(context: context);
+    x.then(
+      (value) {
+        userAttributes = value;
+        List<int> lambdaParameters =
+            '{"name": "getAccSerno", "userId": "${userAttributes["sub"].toString()}"}'
+                .codeUnits;
+        var y = AuthFunc.crudFuncOnDb(
+            parameters: lambdaParameters, context: context);
+        y.then((value) {
+          var accSerno = value;
+          // accSerno: int, name: str, street: str, isoCountryCode: str, locality: str, subThroughFare: str, throughfare: str, subLocality: str, postalCode: str, admistrativeArea: str, subAdministrativeArea: str
+          List<int> lambdaParameters =
+              '{"name": "saveLocation", "accSerno": "$accSerno", "namex": "${placemarks[0].name.toString()}", "street": "${placemarks[0].street.toString()}", "isoCountryCode": "${placemarks[0].isoCountryCode.toString()}", "locality": "${placemarks[0].locality.toString()}", "subThroughFare": "${placemarks[0].subThoroughfare.toString()}", "throughfare": "${placemarks[0].thoroughfare.toString()}", "subLocality": "${placemarks[0].subLocality.toString()}", "postalCode": "${placemarks[0].postalCode.toString()}", "administrativeArea": "${placemarks[0].administrativeArea.toString()}", "subAdministrativeArea": "${placemarks[0].subAdministrativeArea.toString()}"}'
+                  .codeUnits;
+          AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
+        });
+      },
+    );
+  }
+
   void createNewAccount() {
-    print(userAttributes['sub'].toString());
+    log(userAttributes['sub'].toString());
     List<int> lambdaParameters =
         '{"name": "createNewAccount",  "userId": "${userAttributes["sub"].toString()}", "balance": "0", "collectionSerno": "-1", "accStatus": "NORM"}'
             .codeUnits;
-    AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
+    AuthFunc.crudFuncOnDb(
+        parameters: lambdaParameters,
+        context: context,
+        funcName: 'createNewAccount()');
   }
 
   void createAnInstallment(int instPlanSerno) {
@@ -134,12 +182,14 @@ class _TempState extends State<Temp> {
       durationInMonths = int.parse(instPlanInfoList[0].replaceAll(" ", ""));
       accSerno.then((value) {
         accSernoInt = int.parse(value);
-        print(accSernoInt);
+        log(accSernoInt.toString());
         List<int> lambdaParameters =
             '{"name": "createInstallment",  "instType": "-1", "cAccSerno": "${accSernoInt}", "instOrigAmount": "0", "instPrincipalAmount": "1000", "instTrxnSerno": "-1", "outstandingAmt": "1000", "instStatus": "NORM", "interestPercentage": "${interestRate}", "instNoMonths": "${durationInMonths}"}'
                 .codeUnits;
         var result = AuthFunc.crudFuncOnDb(
-            parameters: lambdaParameters, context: context);
+            parameters: lambdaParameters,
+            context: context,
+            funcName: 'createAnInstallment(int instPlanSerno)');
         result.then((value) {
           if (value.contains('errorMessage')) {
             context.showErrorSnackBar(message: "Task Timed Out");
@@ -151,20 +201,14 @@ class _TempState extends State<Temp> {
 
   void addInstallmentToAmortization() {
     if (durationInMonths != -1) {
-      // var lambdaParameters1 =
-      //     '{"name": "cInstalmentSelectQuery", "what": "instSerno"}'.codeUnits;
-      // var lambdaParameters2 =
-      //     '{"name": "cInstalmentSelectQuery", "what": "instTotalAmt"}'
-      //         .codeUnits;
-      // var instSerno = AuthFunc.crudFuncOnDb(
-      //     parameters: lambdaParameters1, context: context);
-      // var instTotalAmt = AuthFunc.crudFuncOnDb(
-      //     parameters: lambdaParameters2, context: context);
       var lambdaParameters =
           '{"name": "createAmortization", "durationInMonths": "${durationInMonths}", "accSerno": "${accSernoInt}"}'
               .codeUnits;
 
-      AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
+      AuthFunc.crudFuncOnDb(
+          parameters: lambdaParameters,
+          context: context,
+          funcName: 'addInstallmentToAmortization()');
     }
   }
 
@@ -199,55 +243,64 @@ class _TempState extends State<Temp> {
       context.showErrorSnackBar(message: 'Check your internet connection');
     }
 
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(53, 56, 57, 1),
-      body: Container(
-        alignment: Alignment.center,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Finished !",
-                style: GoogleFonts.balooTamma(
-                  textStyle: const TextStyle(
-                    color: Color.fromRGBO(225, 200, 87, 1),
-                    fontSize: 35,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: const Color.fromRGBO(53, 56, 57, 1),
+        body: Container(
+          alignment: Alignment.center,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Finished !",
+                  style: GoogleFonts.balooTamma(
+                    textStyle: const TextStyle(
+                      color: Color.fromRGBO(225, 200, 87, 1),
+                      fontSize: 35,
+                    ),
                   ),
                 ),
-              ),
-              FormFields(
-                controller: instSernoController,
-                iconData: FontAwesomeIcons.solidUserCircle,
-                labelText: "Last Name",
-                hintText: "eg. Smith",
-                emptyErrorBool: true,
-                emptyErrorString: "Last Name field is empty",
-                minLengthErrorBool: false,
-                minLengthErrorStrict: false,
-                minLength: 0,
-                minLengthErrorString: "",
-                passwordBool: false,
-              ),
-              ElevatedButton(
-                onPressed: what,
-                child: Text("Signout"),
-              ),
-              ElevatedButton(
-                onPressed: createNewAccount,
-                child: Text("Create Account"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  createAnInstallment(int.parse(instSernoController.text));
-                },
-                child: Text("Create Installment"),
-              ),
-              ElevatedButton(
-                onPressed: addInstallmentToAmortization,
-                child: Text("Create Amortization"),
-              ),
-            ],
+                FormFields(
+                  controller: instSernoController,
+                  iconData: FontAwesomeIcons.solidUserCircle,
+                  labelText: "Last Name",
+                  hintText: "eg. Smith",
+                  emptyErrorBool: true,
+                  emptyErrorString: "Last Name field is empty",
+                  minLengthErrorBool: false,
+                  minLengthErrorStrict: false,
+                  minLength: 0,
+                  minLengthErrorString: "",
+                  passwordBool: false,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    AuthFunc.signOut(context: context);
+                  },
+                  child: Text("Signout"),
+                ),
+                ElevatedButton(
+                  onPressed: createNewAccount,
+                  child: Text("Create Account"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    createAnInstallment(int.parse(instSernoController.text));
+                  },
+                  child: Text("Create Installment"),
+                ),
+                ElevatedButton(
+                  onPressed: addInstallmentToAmortization,
+                  child: Text("Create Amortization"),
+                ),
+                ElevatedButton(
+                  onPressed: _saveLocationToDb,
+                  child: Text("Save Location To Db"),
+                ),
+              ],
+            ),
           ),
         ),
       ),
