@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -8,6 +7,7 @@ import 'components/file_read_write.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as locationService;
+import 'package:flutter_sms_inbox/flutter_sms_inbox.dart';
 
 import './login.dart';
 import 'Home/user_info.dart';
@@ -27,45 +27,33 @@ class _WelcomeState extends State<Welcome> {
   @override
   void initState() {
     _checkUserStatus();
-    _enableLocationService();
-    _getLocationPermission();
-    _getStoragePermission();
+    _checkPermissions();
+    _getAllSms();
     super.initState();
   }
 
-  void _getStoragePermission() async {
-    var status = await Permission.storage.status;
-    if (status.isDenied) {
-      Map<Permission, PermissionStatus> statuses = await [
-        Permission.storage,
-      ].request();
-      log(statuses[Permission.storage].toString());
-    }
-    if (status.isPermanentlyDenied) {
-      exit(0);
-    }
-  }
-
-  void _enableLocationService() async {
-    var _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        exit(0);
-      }
-    }
-  }
-
-  void _getLocationPermission() async {
-    var _permissionGranted = await location.hasPermission();
-    log(_permissionGranted.toString() + 'outside if');
-    if (_permissionGranted == locationService.PermissionStatus.denied) {
-      log(_permissionGranted.toString() + 'inside if');
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        log(_permissionGranted.toString() + 'inside inside if');
+  Future<void> _checkPermissions() async {
+    var status = await Permission.location.status;
+    if (!status.isGranted) {
+      var status = await Permission.location.request();
+      if (status.isGranted) {
+        var status = await Permission.sms.status;
+        if (!status.isGranted) {
+          var status = await Permission.sms.request();
+          if (status.isGranted) {
+            var status = await Permission.storage.status;
+            if (!status.isGranted) {
+              var status = await Permission.storage.request();
+              if (status.isGranted) {
+                log("all permissions granted");
+              }
+            }
+          } else {
+            return;
+          }
+        }
       } else {
-        exit(0);
+        return;
       }
     }
   }
@@ -114,37 +102,44 @@ class _WelcomeState extends State<Welcome> {
     }
   }
 
+  Future<void> _getAllSms() async {
+    var query = SmsQuery();
+    List<SmsMessage> messages = await query.getAllSms;
+    log(messages[messages.length - 1].sender.toString());
+    log(messages[messages.length - 1].address.toString());
+    log(messages[messages.length - 1].body.toString());
+    // log(messages[messages.length - 1].)
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: theme.backgroundColor,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Hero(
-                  tag: "Welcome Text",
-                  child: Text(
-                    'Welcome !',
-                    style: GoogleFonts.balooTamma(
-                      textStyle: const TextStyle(
-                        fontSize: 45,
-                        color: theme.textColor,
-                      ),
+        body: Container(
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            color: theme.backgroundColor,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Hero(
+                tag: "Welcome Text",
+                child: Text(
+                  'Welcome !',
+                  style: GoogleFonts.balooTamma(
+                    textStyle: const TextStyle(
+                      fontSize: 45,
+                      color: theme.textColor,
                     ),
                   ),
                 ),
-                const Center(
-                    child:
-                        CircularProgressIndicator(color: theme.primaryColor)),
-              ],
-            ),
+              ),
+              const Center(
+                child: CircularProgressIndicator(color: theme.primaryColor),
+              ),
+            ],
           ),
         ),
       ),

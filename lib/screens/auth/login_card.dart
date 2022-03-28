@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                           // primary: theme.backgroundColor,
-                          primary: Colors.white,
+                          primary: theme.backgroundColor,
                           onPrimary: theme.secondaryColor,
                           minimumSize: Size(screenSize.width - 10, 55),
                           // shadowColor: theme.secondaryColor,

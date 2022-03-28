@@ -29,9 +29,9 @@ class UserGreetingAnim extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 50,
+      top: 200,
       right: (layer5Speed * (maxScrollOffset - scrollOffset)),
-      left: -180,
+      // left: -180,
       child: Container(
         padding: EdgeInsets.only(
           left: _nullCheckAttributes()!.isEmpty

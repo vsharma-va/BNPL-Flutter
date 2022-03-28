@@ -127,26 +127,11 @@ class _TempState extends State<Temp> {
 
   Future<void> _saveLocationToDb() async {
     await _getLocation();
-    Map<String, String> userAttributes = {};
-    var x = AuthFunc.getUserAttributes(context: context);
-    x.then(
-      (value) {
-        userAttributes = value;
-        List<int> lambdaParameters =
-            '{"name": "getAccSerno", "userId": "${userAttributes["sub"].toString()}"}'
-                .codeUnits;
-        var y = AuthFunc.crudFuncOnDb(
-            parameters: lambdaParameters, context: context);
-        y.then((value) {
-          var accSerno = value;
-          // accSerno: int, name: str, street: str, isoCountryCode: str, locality: str, subThroughFare: str, throughfare: str, subLocality: str, postalCode: str, admistrativeArea: str, subAdministrativeArea: str
-          List<int> lambdaParameters =
-              '{"name": "saveLocation", "accSerno": "$accSerno", "namex": "${placemarks[0].name.toString()}", "street": "${placemarks[0].street.toString()}", "isoCountryCode": "${placemarks[0].isoCountryCode.toString()}", "locality": "${placemarks[0].locality.toString()}", "subThroughFare": "${placemarks[0].subThoroughfare.toString()}", "throughfare": "${placemarks[0].thoroughfare.toString()}", "subLocality": "${placemarks[0].subLocality.toString()}", "postalCode": "${placemarks[0].postalCode.toString()}", "administrativeArea": "${placemarks[0].administrativeArea.toString()}", "subAdministrativeArea": "${placemarks[0].subAdministrativeArea.toString()}"}'
-                  .codeUnits;
-          AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
-        });
-      },
-    );
+    // accSerno: int, name: str, street: str, isoCountryCode: str, locality: str, subThroughFare: str, throughfare: str, subLocality: str, postalCode: str, admistrativeArea: str, subAdministrativeArea: str
+    List<int> lambdaParameters =
+        '{"name": "saveLocation", "accSerno": "$accSernoInt", "namex": "${placemarks[0].name.toString()}", "street": "${placemarks[0].street.toString()}", "isoCountryCode": "${placemarks[0].isoCountryCode.toString()}", "locality": "${placemarks[0].locality.toString()}", "subThroughFare": "${placemarks[0].subThoroughfare.toString()}", "throughfare": "${placemarks[0].thoroughfare.toString()}", "subLocality": "${placemarks[0].subLocality.toString()}", "postalCode": "${placemarks[0].postalCode.toString()}", "administrativeArea": "${placemarks[0].administrativeArea.toString()}", "subAdministrativeArea": "${placemarks[0].subAdministrativeArea.toString()}"}'
+            .codeUnits;
+    AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
   }
 
   void createNewAccount() {
@@ -216,6 +201,7 @@ class _TempState extends State<Temp> {
   void dispose() {
     super.dispose();
     phoneController.dispose();
+    instSernoController.dispose();
   }
 
   @override
@@ -265,10 +251,10 @@ class _TempState extends State<Temp> {
                 FormFields(
                   controller: instSernoController,
                   iconData: FontAwesomeIcons.solidUserCircle,
-                  labelText: "Last Name",
-                  hintText: "eg. Smith",
+                  labelText: "Enter installment plan",
+                  hintText: "Either 1 or 2",
                   emptyErrorBool: true,
-                  emptyErrorString: "Last Name field is empty",
+                  emptyErrorString: "This field cannot be empty",
                   minLengthErrorBool: false,
                   minLengthErrorStrict: false,
                   minLength: 0,

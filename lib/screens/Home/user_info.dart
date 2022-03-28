@@ -54,6 +54,14 @@ class _UserFormState extends State<UserForm> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _panCardController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return WillPopScope(

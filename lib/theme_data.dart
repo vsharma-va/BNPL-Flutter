@@ -10,10 +10,16 @@ import 'package:flutter/material.dart';
 // const primaryColor = Color.fromRGBO(0, 173, 181, 1);
 // const secondaryColor = Color.fromRGBO(255, 46, 99, 1);
 
-const backgroundColor = Color.fromARGB(255, 255, 255, 255);
-const textColor = Color.fromRGBO(38, 42, 52, 1);
-const primaryColor = Color.fromRGBO(8, 217, 214, 1);
-const secondaryColor = Color.fromRGBO(255, 46, 99, 1);
+// const backgroundColor = Color.fromARGB(255, 255, 255, 255);
+// const textColor = Color.fromRGBO(38, 42, 52, 1);
+// const primaryColor = Color.fromRGBO(8, 217, 214, 1);
+// const secondaryColor = Color.fromRGBO(255, 46, 99, 1);
+// const cardGradientEnd = Colors.black;
+
+const backgroundColor = Color.fromRGBO(255, 236, 209, 1);
+const textColor = Color.fromRGBO(0, 21, 36, 1);
+const primaryColor = Color.fromRGBO(21, 97, 109, 1);
+const secondaryColor = Color.fromRGBO(255, 125, 0, 1);
 const cardGradientEnd = Colors.black;
 
 // const backgroundColor = Color.fromRGBO(183, 239, 197, 1);

@@ -201,10 +201,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: theme.primaryColor.withOpacity(0.25),
+                    color: theme.primaryColor.withOpacity(0.75),
                     boxShadow: [
                       BoxShadow(
-                        color: theme.secondaryColor.withOpacity(0.5),
+                        color: Colors.black,
                         spreadRadius: -5,
                         offset: const Offset(-5, -5),
                         blurRadius: 30,
@@ -232,10 +232,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: theme.primaryColor.withOpacity(0.25),
+                    color: theme.primaryColor.withOpacity(0.75),
                     boxShadow: [
                       BoxShadow(
-                        color: theme.secondaryColor.withOpacity(0.5),
+                        color: Colors.black,
                         spreadRadius: -5,
                         offset: const Offset(-5, -5),
                         blurRadius: 30,
