@@ -64,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.1"
+  animated_text_kit:
+    dependency: "direct dev"
+    description:
+      name: animated_text_kit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.1"
   archive:
     dependency: transitive
     description:
@@ -373,13 +380,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1"
-  graphs:
-    dependency: transitive
-    description:
-      name: graphs
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
   http:
     dependency: transitive
     description:
@@ -653,13 +653,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1+1"
-  rive:
-    dependency: "direct dev"
-    description:
-      name: rive
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.8.4"
   shared_aws_api:
     dependency: transitive
     description:

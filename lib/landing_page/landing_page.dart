@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_sms_inbox/flutter_sms_inbox.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
-import '../main/theme_data.dart' as theme;
-import '../forms/user_info.dart';
-import '../helper/page_transitions/left_right_transition.dart';
+import '../theme_data.dart' as theme;
+import '../helper/page_transitions/back_forward_transition.dart';
 import '../register_login/register_or_login.dart';
 
 class Landing_Page extends StatefulWidget {
@@ -17,9 +17,7 @@ class Landing_Page extends StatefulWidget {
   State<Landing_Page> createState() => Landing_Page_State();
 }
 
-class Landing_Page_State extends State<Landing_Page>
-    with SingleTickerProviderStateMixin {
-  late AnimationController animGreetingController;
+class Landing_Page_State extends State<Landing_Page> {
   final List<String> keywordsForSms = [
     'transaction',
     'credited',
@@ -31,11 +29,13 @@ class Landing_Page_State extends State<Landing_Page>
   double maxScrollOffset = 0.0;
   bool isSignUpScreen = true;
 
-  late ScrollController _scrollController;
-
-  Future<void> _navigateToForms() async {
+  Future<void> _navigateToForms(bool isRegister) async {
     Navigator.pushReplacement(
-        context, LeftToRightPageRoute(child: RegisterLogin()));
+        context,
+        ForwardOrBackwardTransition(
+            child: RegisterLogin(
+          isRegister: isRegister,
+        )));
   }
 
   Future<void> _getAllSms() async {
@@ -53,225 +53,165 @@ class Landing_Page_State extends State<Landing_Page>
   void initState() {
     super.initState();
     _getAllSms();
-    _scrollController = ScrollController()
-      ..addListener(() {
-        maxScrollOffset = _scrollController.position.maxScrollExtent;
-        _onScroll();
-      });
-    animGreetingController = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this)
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          if (_scrollOffset.clamp(0, 500) == 500) {
-            animGreetingController.reset();
-            animGreetingController.forward();
-          }
-        }
-      });
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
-    animGreetingController.dispose();
     super.dispose();
   }
-
-  double _scrollOffset = 0.0;
-  void _onScroll() {
-    if (mounted) {
-      setState(() {
-        _scrollOffset = _scrollController.offset;
-      });
-    }
-  }
-
-  final double _layer0Speed = 0.35;
-  final double _layer1Speed = 0.5;
-  final double _layer2Speed = 0.75;
-  final double _layer3Speed = 0.95;
-  final double _offscreenLayerSpeed = 0.45;
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    var layoutHeight = screenSize.height * 2.5;
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
-        body: Container(
-          alignment: Alignment.bottomCenter,
-          decoration: const BoxDecoration(
-            color: theme.backgroundColor,
-            // gradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   colors: [
-            //     Colors.white,
-            //     Colors.black,
-            //   ],
-            // ),
-          ),
-
-          // ClipRect(child: BackdropFilter(
-          //     filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-          child: Column(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: const [
-                    BoxShadow(
-                      spreadRadius: -9,
-                      color: Colors.grey,
-                      blurRadius: 1,
-                      blurStyle: BlurStyle.normal,
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: Image.asset(
-                      './assets/Images/borrowing.png',
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(
-                  top: 45,
-                  left: 65,
-                  right: 65,
-                ),
-                child: Text(
-                  'Borrowing Made Easier!',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.bebasNeue(
-                    textStyle: const TextStyle(
-                      fontSize: 40,
-                      color: theme.textColor,
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(
-                  top: 10,
-                  left: 35,
-                  right: 35,
-                ),
-                child: Text(
-                  'A Carefully crafted experience to remove all the pain points which generally come with borrowing money',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.bebasNeue(
-                    textStyle: TextStyle(
-                      fontSize: 25,
-                      color: theme.textColor.withOpacity(0.5),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(
-                  top: 15,
-                  left: 25,
-                  right: 25,
-                ),
-                width: screenSize.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: theme.backgroundColor,
-                        onPrimary: theme.secondaryColor,
-                        minimumSize: Size(screenSize.width / 2 - 50, 55),
-                        shadowColor: Colors.black,
-                        enableFeedback: true,
-                        elevation: 15,
-                        // shape: RoundedRectangleBorder(
-                        //   borderRadius: BorderRadius.circular(25),
-                        // ),
-                      ),
-                      child: Text(
-                        'Register',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.bebasNeue(
-                          textStyle: const TextStyle(
-                            fontSize: 20,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                      ),
-                      onPressed: () {
-                        _navigateToForms();
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: theme.backgroundColor,
-                        onPrimary: theme.secondaryColor,
-                        minimumSize: Size(screenSize.width / 2 - 50, 55),
-                        shadowColor: Colors.black,
-                        enableFeedback: true,
-                        elevation: 15,
-                        // shape: RoundedRectangleBorder(
-                        //   borderRadius: BorderRadius.circular(25),
-                        // ),
-                      ),
-                      onPressed: null,
-                      child: Text(
-                        'Login',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.bebasNeue(
-                          textStyle: const TextStyle(
-                            fontSize: 20,
-                            color: theme.backgroundColor,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-
-              // Positioned(
-              //   top: screenSize.height + (_layer1Speed * _scrollOffset * -1),
-              //   right: 0,
-              //   left:
-              //       (_offscreenLayerSpeed * (maxScrollOffset - _scrollOffset)),
-              //   height: screenSize.height * 0.9,
-              //   child: Stack(
-              //     children: [
-              //       // CarAnim(
-              //       //   animController: animController,
-              //       //   width: screenSize.width,
-              //       // ),
-              //       LoginScreen(
-              //         attributes: attributes ?? fileMap,
-              //         screenSize: screenSize,
-              //         globalKey: GlobalKey(),
-              //       ),
-              //       // Positioned(
-              //       //   top: 300,
-              //       //   left: 0,
-              //       //   right: 0,
-              //       //   child: Center(
-              //       //     child: Container(
-              //       //       height: 500,
-              //       //       width: 250,
-              //       //       child: rive.RiveAnimation.asset(
-              //       //         "assets/animations/logo_Animation.riv",
-              //       //         fit: BoxFit.contain,
-              //       //       ),
-              //       //     ),
-              //       //   ),
-              //       // ),
-              //     ],
-              //   ),
+      child: SafeArea(
+        child: Scaffold(
+          body: Container(
+            alignment: Alignment.bottomCenter,
+            decoration: const BoxDecoration(
+              color: theme.backgroundColor,
+              // gradient: LinearGradient(
+              //   begin: Alignment.topCenter,
+              //   colors: [
+              //     Colors.white,
+              //     Colors.black,
+              //   ],
               // ),
-            ],
+            ),
+
+            // ClipRect(child: BackdropFilter(
+            //     filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: const [
+                      BoxShadow(
+                        spreadRadius: -9,
+                        color: Colors.grey,
+                        blurRadius: 1,
+                        blurStyle: BlurStyle.normal,
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Image.asset(
+                        './assets/Images/borrowing.png',
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                    top: 45,
+                    left: 65,
+                    right: 65,
+                  ),
+                  child: Text(
+                    'Borrowing Made Easier!',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.bebasNeue(
+                      textStyle: const TextStyle(
+                        fontSize: 40,
+                        color: theme.textColor,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    left: 35,
+                    right: 35,
+                  ),
+                  height: 110,
+                  child: DefaultTextStyle(
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.bebasNeue(
+                      textStyle: TextStyle(
+                        fontSize: 25,
+                        color: theme.textColor.withOpacity(0.5),
+                      ),
+                    ),
+                    child: AnimatedTextKit(
+                      repeatForever: true,
+                      animatedTexts: [
+                        RotateAnimatedText(
+                            "Borrow from the comfort of your home",
+                            textAlign: TextAlign.center),
+                        RotateAnimatedText("Paper less process"),
+                        RotateAnimatedText("Takes less than 10 minutes"),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                    top: 15,
+                    left: 25,
+                    right: 25,
+                  ),
+                  width: screenSize.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: theme.backgroundColor,
+                          onPrimary: theme.secondaryColor,
+                          minimumSize: Size(screenSize.width / 2 - 50, 55),
+                          shadowColor: Colors.black,
+                          enableFeedback: true,
+                          elevation: 25,
+                          // shape: RoundedRectangleBorder(
+                          //   borderRadius: BorderRadius.circular(25),
+                          // ),
+                        ),
+                        child: Text(
+                          'Register',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.bebasNeue(
+                            textStyle: const TextStyle(
+                              fontSize: 20,
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          _navigateToForms(true);
+                        },
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.grey,
+                          minimumSize: Size(screenSize.width / 2 - 50, 55),
+                          elevation: 0,
+                          // shape: RoundedRectangleBorder(
+                          //   borderRadius: BorderRadius.circular(25),
+                          // ),
+                        ),
+                        onPressed: () => _navigateToForms(false),
+                        child: Text(
+                          'Login',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.bebasNeue(
+                            textStyle: const TextStyle(
+                              fontSize: 20,
+                              color: theme.backgroundColor,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../helper/animations/out_of_screen_right.dart';
 import './welcome.dart';
-import '../helper/page_transitions/left_right_transition.dart';
+import '../helper/page_transitions/back_forward_transition.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -37,7 +37,8 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     // Welcome page contains the code for requresting permission and some initialization
     animController.forward();
     await Future.delayed(Duration(milliseconds: 1000), () {});
-    Navigator.pushReplacement(context, LeftToRightPageRoute(child: Welcome()));
+    Navigator.pushReplacement(
+        context, ForwardOrBackwardTransition(child: Welcome()));
   }
 
   @override

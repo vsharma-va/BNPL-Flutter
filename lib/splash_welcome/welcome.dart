@@ -8,9 +8,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as locationService;
 
 import '../landing_page/landing_page.dart';
-import '../helper/page_transitions/left_right_transition.dart';
+import '../helper/page_transitions/back_forward_transition.dart';
 import '../forms/user_info.dart';
-import '../main/theme_data.dart' as theme;
+import '../theme_data.dart' as theme;
 import '../helper/animations/out_of_screen_right.dart';
 
 class Welcome extends StatefulWidget {
@@ -84,7 +84,7 @@ class _WelcomeState extends State<Welcome> with SingleTickerProviderStateMixin {
     animController.forward();
     await Future.delayed(const Duration(milliseconds: 1000), () {});
     Navigator.pushReplacement(
-        context, LeftToRightPageRoute(child: Landing_Page()));
+        context, ForwardOrBackwardTransition(child: Landing_Page()));
   }
 
   // if the user is signed in they are sent to the userform screen (for now)
@@ -107,38 +107,40 @@ class _WelcomeState extends State<Welcome> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
-        body: Container(
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            color: theme.backgroundColor,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RightOutAnim(
-                animController: animController,
-                width: MediaQuery.of(context).size.width,
-                child1: Text(
-                  'Welcome !',
-                  style: GoogleFonts.bebasNeue(
-                    textStyle: const TextStyle(
-                      fontSize: 45,
-                      color: theme.textColor,
+      child: SafeArea(
+        child: Scaffold(
+          body: Container(
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: theme.backgroundColor,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RightOutAnim(
+                  animController: animController,
+                  width: MediaQuery.of(context).size.width,
+                  child1: Text(
+                    'Welcome !',
+                    style: GoogleFonts.bebasNeue(
+                      textStyle: const TextStyle(
+                        fontSize: 45,
+                        color: theme.textColor,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Center(
-                child: RightOutAnim(
-                  animController: animController,
-                  width: MediaQuery.of(context).size.width,
-                  child1: const CircularProgressIndicator(
-                    color: theme.primaryColor,
+                Center(
+                  child: RightOutAnim(
+                    animController: animController,
+                    width: MediaQuery.of(context).size.width,
+                    child1: const CircularProgressIndicator(
+                      color: theme.primaryColor,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

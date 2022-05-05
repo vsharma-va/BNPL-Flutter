@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../main/theme_data.dart' as theme;
+import '../../theme_data.dart' as theme;
 
 class FormFields extends StatelessWidget {
   FormFields({
@@ -40,7 +40,7 @@ class FormFields extends StatelessWidget {
       autocorrect: passwordBool ? false : true,
       keyboardType:
           passwordBool ? TextInputType.text : TextInputType.emailAddress,
-      style: GoogleFonts.balooTamma(
+      style: GoogleFonts.bebasNeue(
         textStyle: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.normal,
@@ -48,14 +48,14 @@ class FormFields extends StatelessWidget {
       ),
       decoration: InputDecoration(
         labelText: '$labelText*',
-        labelStyle: GoogleFonts.balooTamma(
+        labelStyle: GoogleFonts.bebasNeue(
           textStyle: const TextStyle(
               // field name colour
               fontSize: 15,
               fontWeight: FontWeight.bold,
               color: theme.secondaryColor),
         ),
-        floatingLabelStyle: GoogleFonts.balooTamma(
+        floatingLabelStyle: GoogleFonts.bebasNeue(
           textStyle: const TextStyle(
               // field name colour when the text field is selected
               fontSize: 15,
@@ -63,7 +63,7 @@ class FormFields extends StatelessWidget {
               color: theme.secondaryColor),
         ),
         hintText: '$hintText',
-        hintStyle: GoogleFonts.balooTamma(
+        hintStyle: GoogleFonts.bebasNeue(
           textStyle: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.normal,

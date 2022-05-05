@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../parent/form_fields.dart';
-import '../../main/theme_data.dart' as theme;
+import '../../theme_data.dart' as theme;
 
 class UserNameForm extends StatelessWidget {
   UserNameForm(
@@ -20,7 +20,8 @@ class UserNameForm extends StatelessWidget {
           padding: const EdgeInsets.all(0),
           child: Text(
             "Tell Us Your Name",
-            style: GoogleFonts.balooTamma(
+            textAlign: TextAlign.center,
+            style: GoogleFonts.bebasNeue(
               textStyle: const TextStyle(
                 color: theme.textColor,
                 fontSize: 30,
@@ -29,19 +30,23 @@ class UserNameForm extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(0),
+          padding: const EdgeInsets.only(top: 15),
           child: Text(
             "Be Exact As Per Your Bank Records",
-            style: GoogleFonts.balooTamma(
+            textAlign: TextAlign.center,
+            style: GoogleFonts.bebasNeue(
               textStyle: const TextStyle(
                 color: theme.secondaryColor,
-                fontSize: 20,
+                fontSize: 25,
               ),
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(
+            bottom: 25,
+            top: 45,
+          ),
           child: FormFields(
             controller: firstNameController,
             iconData: FontAwesomeIcons.solidUserCircle,
@@ -56,18 +61,23 @@ class UserNameForm extends StatelessWidget {
             passwordBool: false,
           ),
         ),
-        FormFields(
-          controller: lastNameController,
-          iconData: FontAwesomeIcons.solidUserCircle,
-          labelText: "Last Name",
-          hintText: "eg. Smith",
-          emptyErrorBool: true,
-          emptyErrorString: "Last Name field is empty",
-          minLengthErrorBool: false,
-          minLengthErrorStrict: false,
-          minLength: 0,
-          minLengthErrorString: "",
-          passwordBool: false,
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: 45,
+          ),
+          child: FormFields(
+            controller: lastNameController,
+            iconData: FontAwesomeIcons.solidUserCircle,
+            labelText: "Last Name",
+            hintText: "eg. Smith",
+            emptyErrorBool: true,
+            emptyErrorString: "Last Name field is empty",
+            minLengthErrorBool: false,
+            minLengthErrorStrict: false,
+            minLength: 0,
+            minLengthErrorString: "",
+            passwordBool: false,
+          ),
         ),
       ],
     );

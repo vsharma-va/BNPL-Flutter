@@ -1,99 +1,123 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../main/theme_data.dart' as theme;
+import '../../theme_data.dart' as theme;
 
-class ProfessionForm extends StatelessWidget {
-  const ProfessionForm({Key? key}) : super(key: key);
+enum Professions { business, employed, student }
+
+class ProfessionForm extends StatefulWidget {
+  @override
+  State<ProfessionForm> createState() => _ProfessionFormState();
+}
+
+class _ProfessionFormState extends State<ProfessionForm> {
+  Professions? _which = Professions.business;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           "Tell us more about yourself",
-          style: GoogleFonts.balooTamma(
+          textAlign: TextAlign.center,
+          style: GoogleFonts.bebasNeue(
             textStyle: const TextStyle(
               color: theme.textColor,
-              fontSize: 25,
+              fontSize: 30,
             ),
           ),
         ),
         Text(
           "Choose your current profession",
-          style: GoogleFonts.balooTamma(
+          textAlign: TextAlign.center,
+          style: GoogleFonts.bebasNeue(
             textStyle: const TextStyle(
               color: theme.secondaryColor,
-              fontSize: 20,
+              fontSize: 25,
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(250, 45),
+        Container(
+          padding: const EdgeInsets.only(
+            top: 25,
+            bottom: 5,
+          ),
+          child: ListTile(
+            enableFeedback: true,
+            title: Text(
+              "Business",
+              style: GoogleFonts.bebasNeue(
+                textStyle: const TextStyle(
+                  color: theme.textColor,
+                  fontSize: 25,
+                ),
+              ),
             ),
-            icon: const Icon(
-              FontAwesomeIcons.bookOpen,
-              color: theme.textColor,
+            leading: Radio<Professions>(
+              activeColor: theme.primaryColor,
+              splashRadius: 25,
+              value: Professions.business,
+              groupValue: _which,
+              onChanged: (Professions? value) {
+                setState(() {
+                  _which = value;
+                });
+              },
             ),
-            onPressed: () {},
-            label: Text(
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.only(
+            bottom: 5,
+          ),
+          child: ListTile(
+            title: Text(
+              "Employed",
+              style: GoogleFonts.bebasNeue(
+                textStyle: const TextStyle(
+                  color: theme.textColor,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            leading: Radio<Professions>(
+              activeColor: theme.primaryColor,
+              value: Professions.employed,
+              splashRadius: 25,
+              groupValue: _which,
+              onChanged: (Professions? value) {
+                setState(() {
+                  _which = value;
+                });
+              },
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.only(
+            bottom: 5,
+          ),
+          child: ListTile(
+            title: Text(
               "Student",
-              style: GoogleFonts.balooTamma(
+              style: GoogleFonts.bebasNeue(
                 textStyle: const TextStyle(
                   color: theme.textColor,
                   fontSize: 25,
                 ),
               ),
             ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(250, 45),
-            ),
-            icon: const Icon(
-              FontAwesomeIcons.cashRegister,
-              color: theme.textColor,
-            ),
-            onPressed: () {},
-            label: Text(
-              "Salaried",
-              style: GoogleFonts.balooTamma(
-                textStyle: const TextStyle(
-                  color: theme.textColor,
-                  fontSize: 25,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(250, 45),
-            ),
-            icon: const Icon(
-              FontAwesomeIcons.building,
-              color: theme.textColor,
-            ),
-            onPressed: () {},
-            label: Text(
-              "Self Employed",
-              style: GoogleFonts.balooTamma(
-                textStyle: const TextStyle(
-                  color: theme.textColor,
-                  fontSize: 25,
-                ),
-              ),
+            leading: Radio<Professions>(
+              activeColor: theme.primaryColor,
+              value: Professions.student,
+              splashRadius: 25,
+              groupValue: _which,
+              onChanged: (Professions? value) {
+                setState(() {
+                  _which = value;
+                });
+              },
             ),
           ),
         ),

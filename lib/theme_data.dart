@@ -21,6 +21,7 @@ const textColor = Color.fromRGBO(0, 21, 36, 1);
 const primaryColor = Color.fromRGBO(21, 97, 109, 1);
 const secondaryColor = Color.fromRGBO(255, 125, 0, 1);
 const cardGradientEnd = Colors.black;
+const form = Color.fromRGBO(202, 228, 219, 1);
 
 // const backgroundColor = Color.fromRGBO(183, 239, 197, 1);
 // const textColor = Color.fromRGBO(16, 69, 29, 1);

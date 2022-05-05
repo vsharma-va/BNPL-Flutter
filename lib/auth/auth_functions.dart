@@ -9,6 +9,7 @@ import 'package:aws_lambda_api/lambda-2015-03-31.dart' as lambda;
 import '../forms/user_info.dart';
 import 'errorSnackBar.dart';
 import '../landing_page/landing_page.dart';
+import '../home/temp.dart';
 
 class AuthFunc {
   static Future<void> googleSignIn({required BuildContext context}) async {
@@ -16,12 +17,49 @@ class AuthFunc {
       var res =
           await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
       if (res.isSignedIn) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: ((context) => UserForm())));
+        proceedToNextPageAfterAuth(context: context);
       }
     } on AmplifyException catch (e) {
       context.showErrorSnackBar(message: e.message);
     }
+  }
+
+  static void proceedToNextPageAfterAuth({required BuildContext context}) {
+    var userAttributes = {};
+    getUserAttributes(context: context).then(
+      (value) {
+        userAttributes = value;
+        log(userAttributes['sub'].toString());
+        List<int> lambdaParameters =
+            '{"name": "getAccSerno", "userId": "${userAttributes["sub"].toString()}"}'
+                .codeUnits;
+        var returnString = '';
+        var futureReturnString =
+            crudFuncOnDb(parameters: lambdaParameters, context: context);
+        futureReturnString.then(
+          (value) {
+            returnString = value;
+            log(returnString);
+            if (returnString != 'false') {
+              try {
+                int.parse(returnString);
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: ((context) => Temp())));
+                log('to temp');
+              } on FormatException {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: ((context) => UserForm())));
+                log('to userform');
+              }
+            } else {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: ((context) => UserForm())));
+              log('else userform');
+            }
+          },
+        );
+      },
+    );
   }
 
   static Future<void> facebookSignIn({required BuildContext context}) async {
@@ -29,8 +67,7 @@ class AuthFunc {
       var res =
           await Amplify.Auth.signInWithWebUI(provider: AuthProvider.facebook);
       if (res.isSignedIn) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: ((context) => UserForm())));
+        proceedToNextPageAfterAuth(context: context);
       }
     } on AmplifyException catch (e) {
       context.showErrorSnackBar(message: e.message);
@@ -94,20 +131,17 @@ class AuthFunc {
             payload: Uint8List.fromList(parameters));
 
         returnString = String.fromCharCodes(lambdaResponse.payload!);
-        log(returnString);
         // context.showErrorSnackBar(
         //     message: "attributeName: ${funcName} Success !!");
         return returnString;
       } catch (e) {
         // context.showErrorSnackBar(
         //     message: e.toString() + ' at attributeName: $funcName Faliure');
-        log(e.toString());
         return 'false';
       }
     } on AuthException catch (e) {
       // context.showErrorSnackBar(
       //     message: e.message + ' at attributeName: $funcName Faliure');
-      log(e.toString());
       return 'false';
     }
   }
