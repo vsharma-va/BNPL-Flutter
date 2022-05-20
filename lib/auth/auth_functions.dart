@@ -39,9 +39,9 @@ class AuthFunc {
         futureReturnString.then(
           (value) {
             returnString = value;
-            log(returnString);
             if (returnString != 'false') {
               try {
+                log(returnString);
                 int.parse(returnString);
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: ((context) => Temp())));
@@ -137,6 +137,7 @@ class AuthFunc {
       } catch (e) {
         // context.showErrorSnackBar(
         //     message: e.toString() + ' at attributeName: $funcName Faliure');
+        log(e.toString());
         return 'false';
       }
     } on AuthException catch (e) {

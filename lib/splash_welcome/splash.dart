@@ -33,12 +33,12 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   // 2350 milliseconds is the length of the animation => after 2350 milliseconds
   // the page is changed
   Future<void> _navigateToLogin() async {
-    await Future.delayed(Duration(milliseconds: 1000), () {});
+    await Future.delayed(const Duration(milliseconds: 1000), () {});
     // Welcome page contains the code for requresting permission and some initialization
     animController.forward();
-    await Future.delayed(Duration(milliseconds: 1000), () {});
+    await Future.delayed(const Duration(milliseconds: 1000), () {});
     Navigator.pushReplacement(
-        context, ForwardOrBackwardTransition(child: Welcome()));
+        context, ForwardOrBackwardTransition(child: const Welcome()));
   }
 
   @override

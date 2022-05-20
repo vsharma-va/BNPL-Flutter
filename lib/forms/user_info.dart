@@ -21,9 +21,9 @@ class UserForm extends StatefulWidget {
 }
 
 class _UserFormState extends State<UserForm> {
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
-  TextEditingController _panCardController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _panCardController = TextEditingController();
   final GlobalKey globalKey = GlobalKey();
   final _userNameFormKey = GlobalKey<FormState>();
   final _panCardFormKey = GlobalKey<FormState>();

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_sms_inbox/flutter_sms_inbox.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:intl/intl.dart';
 
 import '../theme_data.dart' as theme;
 import '../helper/page_transitions/back_forward_transition.dart';
@@ -18,18 +19,26 @@ class Landing_Page extends StatefulWidget {
 }
 
 class Landing_Page_State extends State<Landing_Page> {
-  final List<String> keywordsForSms = [
-    'transaction',
-    'credited',
-    'debited',
-    'account',
-    'OTP',
-    'payment'
-  ];
+  // final List<String> keywordsForSms = [
+  //   'transaction',
+  //   'credited',
+  //   'debited',
+  //   'account',
+  //   'OTP',
+  //   'payment',
+  //   'credit',
+  //   'debit',
+  //   'reversal',
+  //   'refund',
+  //   'credit card',
+  //   'spent',
+  //   'reversed',
+  //   ''
+  // ];
   double maxScrollOffset = 0.0;
   bool isSignUpScreen = true;
 
-  Future<void> _navigateToForms(bool isRegister) async {
+  Future<void> _navigateToForms({required bool isRegister}) async {
     Navigator.pushReplacement(
         context,
         ForwardOrBackwardTransition(
@@ -42,9 +51,25 @@ class Landing_Page_State extends State<Landing_Page> {
     var query = SmsQuery();
     List<SmsMessage> messages = await query.getAllSms;
     for (int i = 0; i < messages.length; i++) {
-      if (keywordsForSms.any(
-          (item) => messages[i].body.toString().toLowerCase().contains(item))) {
-        log(messages[i].body.toString());
+      DateTime now = DateTime.now();
+      var formatter = DateFormat('dd-MM-yyyy');
+      String formattedDate = formatter.format(now);
+      var dateSplit = formattedDate.split('-');
+      var date = DateTime(int.parse(dateSplit[2]), int.parse(dateSplit[1]),
+          int.parse(dateSplit[0]));
+      var threeMonthsPriorDate = DateTime(date.year, date.month - 3, date.day);
+      var threeMonthsPriorDateString = formatter.format(threeMonthsPriorDate);
+
+      if (int.parse(messages[i].date!.month.toString()) >=
+              int.parse(threeMonthsPriorDateString.split('-')[1]) &&
+          int.parse(messages[i].date!.month.toString()) <=
+              int.parse(dateSplit[1])) {
+        var regEx = RegExp(r'[a-zA-Z0-9]{2}-[a-zA-Z0-9]{6}');
+        var allMatches = regEx
+            .allMatches(messages[i].sender.toString())
+            .map((z) => z.group(0))
+            .toList();
+        log(allMatches.toString());
       }
     }
   }
@@ -183,7 +208,7 @@ class Landing_Page_State extends State<Landing_Page> {
                           ),
                         ),
                         onPressed: () {
-                          _navigateToForms(true);
+                          _navigateToForms(isRegister: true);
                         },
                       ),
                       ElevatedButton(
@@ -195,7 +220,7 @@ class Landing_Page_State extends State<Landing_Page> {
                           //   borderRadius: BorderRadius.circular(25),
                           // ),
                         ),
-                        onPressed: () => _navigateToForms(false),
+                        onPressed: () => _navigateToForms(isRegister: false),
                         child: Text(
                           'Login',
                           textAlign: TextAlign.center,

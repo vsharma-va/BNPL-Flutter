@@ -15,8 +15,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.white,
-    systemNavigationBarColor: Colors.white,
+    statusBarColor: theme.backgroundColor,
+    systemNavigationBarColor: theme.backgroundColor,
     systemNavigationBarIconBrightness: Brightness.light,
     systemNavigationBarDividerColor: null,
     statusBarIconBrightness: Brightness.dark,

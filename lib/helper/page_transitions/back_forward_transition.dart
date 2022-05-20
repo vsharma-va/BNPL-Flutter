@@ -9,7 +9,7 @@ class ForwardOrBackwardTransition extends PageRouteBuilder {
     required this.child,
     this.back = false, // if not back then it is assumed to be forward
   }) : super(
-          transitionDuration: Duration(milliseconds: 500),
+          transitionDuration: Duration(milliseconds: 250),
           pageBuilder: (context, animation, secondaryAnimation) => child,
         );
 
