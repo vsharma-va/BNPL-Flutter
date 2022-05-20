@@ -3,7 +3,9 @@ from datetime import datetime
 class cInstallment:
     def __init__(self, cursor):
         self.cursor = cursor 
-        
+    
+    # limit installment to 1 at a time
+    
     def createInstallment(self, instType: int, cAccSerno: int, instOrigAmount: float, instPrincipalAmount: float, 
         instTrxnSerno: int, outstandingAmt: float, instStatus: str, interestPercentage: float, 
         instNoMonths: int):
@@ -22,4 +24,4 @@ class cInstallment:
     def genericSelectQuery(self, what: str, accSerno: int):
         self.cursor.execute(f'SELECT {what} FROM cInstalment WHERE cAccSerno = {accSerno}')
         rows = self.cursor.fetchall()
-        return rows[0][f'{what}']
+        return rows[-1][f'{what}']

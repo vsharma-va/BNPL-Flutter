@@ -10,4 +10,7 @@ class cAccount:
     def getAccSerno(self, userId: str):
         self.cursor.execute(f'select accSerno from slopay.cAccounts where userID = "{userId}"')
         rows = self.cursor.fetchall()
-        return rows[0]['accSerno']
+        if len(rows) == 0:
+            return rows
+        else:
+            return rows[0]['accSerno']

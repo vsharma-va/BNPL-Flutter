@@ -6,6 +6,7 @@ import cInstallment
 import cInstallmentPlan
 import cAmortization
 import cCustGeoLocation
+import cSms
 import os
 
 
@@ -20,14 +21,14 @@ connection = pymysql.connect(host=os.environ['endpoint'],
 
 def lambda_handler(event, context):
     cursor = connection.cursor()
-    if(event['name'] == 'insertcUser'):
-        insertClass = apidbInsert.InsertIntoDb(cursor)
-        query = insertClass.insertIntoCUser(
-            event['userId'], event['userName'], event['userEmail'], event['userMobileNo'], event['userAge'], event['userCast'])
-        connection.commit()
-        return {'status': 'Success'}
+    # if(event['name'] == 'insertcUser'):
+    #     insertClass = apidbInsert.InsertIntoDb(cursor)
+    #     query = insertClass.insertIntoCUser(
+    #         event['userId'], event['userName'], event['userEmail'], event['userMobileNo'], event['userAge'], event['userCast'])
+    #     connection.commit()
+    #     return {'status': 'Success'}
 
-    elif(event['name'] == 'createNewAccount'):
+    if(event['name'] == 'createNewAccount'):
         cAccountClass = cAccount.cAccount(cursor)
         query = cAccountClass.createNewAccount(
             event['userId'], event['balance'], event['collectionSerno'], event['accStatus'])
@@ -57,6 +58,11 @@ def lambda_handler(event, context):
             event['instPlanSerno'])
         return [tenure, interestRate]
 
+    elif(event['name'] == 'getNumberOfPlans'):
+        cInstallmentPlanClass = cInstallmentPlan.cInstallmentPlan(cursor)
+        number = cInstallmentPlanClass.getNumberOfPlans()
+        return number
+
     elif(event['name'] == 'createAmortization'):
         cAmortizationClass = cAmortization.cAmortization(cursor)
         cAmortizationClass.createAmortization(
@@ -73,9 +79,9 @@ def lambda_handler(event, context):
         return{'status': 'Success'}
     elif(event['name'] == 'storeSms'):
         cSmsClass = cSms.cSms(cursor)
-        cSmsClass.storeSms(event['accSerno'], event['sender'],
-                           event['body'], event['datetimestamp'])
+        test = cSmsClass.storeSms(event['accSerno'], event['sender'],
+                                  event['body'], event['datetimestamp'])
         connection.commit()
-        return{'status': 'Success'}
+        return test
     else:
         return {"status": "Failed"}
