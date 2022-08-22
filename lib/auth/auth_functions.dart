@@ -9,7 +9,7 @@ import 'package:aws_lambda_api/lambda-2015-03-31.dart' as lambda;
 import '../forms/user_info.dart';
 import 'errorSnackBar.dart';
 import '../landing_page/landing_page.dart';
-import '../home/temp.dart';
+import '../temp/temp.dart';
 
 class AuthFunc {
   static Future<void> googleSignIn({required BuildContext context}) async {
@@ -79,9 +79,9 @@ class AuthFunc {
     Map<String, String> attributes = {};
     try {
       var res = await Amplify.Auth.fetchUserAttributes();
-      res.forEach((element) {
+      for (var element in res) {
         attributes[element.userAttributeKey.toString()] = element.value;
-      });
+      }
     } on AuthException catch (e) {
       context.showErrorSnackBar(message: e.message);
     }
@@ -100,7 +100,8 @@ class AuthFunc {
         ),
       );
     } on AmplifyException catch (e) {
-      context.showErrorSnackBar(message: e.message);
+      context.showErrorSnackBar(
+          message: e.message, upTime: const Duration(milliseconds: 3000));
     }
   }
 

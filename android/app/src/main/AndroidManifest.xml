@@ -45,6 +45,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
+        <activity android:name="io.github.edufolly.fluttermobilevision.ocr.OcrCaptureActivity" />
         <activity
             android:name="com.amazonaws.mobileconnectors.cognitoauth.activities.CustomTabsRedirectActivity"
             android:exported="true">

@@ -47,37 +47,36 @@ class Landing_Page_State extends State<Landing_Page> {
         )));
   }
 
-  Future<void> _getAllSms() async {
-    var query = SmsQuery();
-    List<SmsMessage> messages = await query.getAllSms;
-    for (int i = 0; i < messages.length; i++) {
-      DateTime now = DateTime.now();
-      var formatter = DateFormat('dd-MM-yyyy');
-      String formattedDate = formatter.format(now);
-      var dateSplit = formattedDate.split('-');
-      var date = DateTime(int.parse(dateSplit[2]), int.parse(dateSplit[1]),
-          int.parse(dateSplit[0]));
-      var threeMonthsPriorDate = DateTime(date.year, date.month - 3, date.day);
-      var threeMonthsPriorDateString = formatter.format(threeMonthsPriorDate);
+  // Future<void> _getAllSms() async {
+  //   var query = SmsQuery();
+  //   List<SmsMessage> messages = await query.getAllSms;
+  //   for (int i = 0; i < messages.length; i++) {
+  //     DateTime now = DateTime.now();
+  //     var formatter = DateFormat('dd-MM-yyyy');
+  //     String formattedDate = formatter.format(now);
+  //     var dateSplit = formattedDate.split('-');
+  //     var date = DateTime(int.parse(dateSplit[2]), int.parse(dateSplit[1]),
+  //         int.parse(dateSplit[0]));
+  //     var threeMonthsPriorDate = DateTime(date.year, date.month - 3, date.day);
+  //     var threeMonthsPriorDateString = formatter.format(threeMonthsPriorDate);
 
-      if (int.parse(messages[i].date!.month.toString()) >=
-              int.parse(threeMonthsPriorDateString.split('-')[1]) &&
-          int.parse(messages[i].date!.month.toString()) <=
-              int.parse(dateSplit[1])) {
-        var regEx = RegExp(r'[a-zA-Z0-9]{2}-[a-zA-Z0-9]{6}');
-        var allMatches = regEx
-            .allMatches(messages[i].sender.toString())
-            .map((z) => z.group(0))
-            .toList();
-        log(allMatches.toString());
-      }
-    }
-  }
+  //     if (int.parse(messages[i].date!.month.toString()) >=
+  //             int.parse(threeMonthsPriorDateString.split('-')[1]) &&
+  //         int.parse(messages[i].date!.month.toString()) <=
+  //             int.parse(dateSplit[1])) {
+  //       var regEx = RegExp(r'[a-zA-Z0-9]{2}-[a-zA-Z0-9]{6}');
+  //       var allMatches = regEx
+  //           .allMatches(messages[i].sender.toString())
+  //           .map((z) => z.group(0))
+  //           .toList();
+  //       log(allMatches.toString());
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
-    _getAllSms();
   }
 
   @override

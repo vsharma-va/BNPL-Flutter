@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:typed_data';
+import 'dart:convert';
 
+import 'package:bnpl/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -18,6 +20,7 @@ import './components/text_recognition/text_recognition_view.dart';
 import '../landing_page/landing_page.dart';
 import '../helper/page_transitions/back_forward_transition.dart';
 import '../plan_selection/plan_display.dart';
+import '../lambda/common_queries.dart';
 
 class Temp extends StatefulWidget {
   @override
@@ -41,6 +44,7 @@ class _TempState extends State<Temp> {
   dynamic currentLocation = '';
   List<Placemark> placemarks = [];
   var location = locationService.Location();
+  var query = Query();
 
   Future<void> signUp() async {
     try {
@@ -137,13 +141,24 @@ class _TempState extends State<Temp> {
   Future<void> _saveLocationToDb() async {
     await _getLocation();
     // accSerno: int, name: str, street: str, isoCountryCode: str, locality: str, subThroughFare: str, throughfare: str, subLocality: str, postalCode: str, admistrativeArea: str, subAdministrativeArea: str
+    if (accSernoInt == -1) {
+      var accSernoFuture = await query.getAccSernoByCognitoId(context: context);
+      accSernoInt = int.parse(accSernoFuture);
+      _saveLocationToDbQuery();
+    } else {
+      _saveLocationToDbQuery();
+    }
+  }
+
+  Future<void> _saveLocationToDbQuery() async {
     List<int> lambdaParameters =
         '{"name": "saveLocation", "accSerno": "$accSernoInt", "namex": "${placemarks[0].name.toString()}", "street": "${placemarks[0].street.toString()}", "isoCountryCode": "${placemarks[0].isoCountryCode.toString()}", "locality": "${placemarks[0].locality.toString()}", "subThroughFare": "${placemarks[0].subThoroughfare.toString()}", "throughfare": "${placemarks[0].thoroughfare.toString()}", "subLocality": "${placemarks[0].subLocality.toString()}", "postalCode": "${placemarks[0].postalCode.toString()}", "administrativeArea": "${placemarks[0].administrativeArea.toString()}", "subAdministrativeArea": "${placemarks[0].subAdministrativeArea.toString()}"}'
             .codeUnits;
-    var x =
+    var returnString =
         AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
-    x.then((value) {
-      log(value.toString());
+    returnString.then((value) {
+      context.showErrorSnackBar(
+          message: value, upTime: const Duration(milliseconds: 400000));
     });
   }
 
@@ -152,19 +167,28 @@ class _TempState extends State<Temp> {
     List<int> lambdaParameters =
         '{"name": "createNewAccount",  "userId": "${userAttributes["sub"].toString()}", "balance": "0", "collectionSerno": "-1", "accStatus": "NORM"}'
             .codeUnits;
-    AuthFunc.crudFuncOnDb(
+    var returnValue = AuthFunc.crudFuncOnDb(
         parameters: lambdaParameters,
         context: context,
         funcName: 'createNewAccount()');
+    returnValue.then((value) {
+      context.showErrorSnackBar(
+          message: value, upTime: const Duration(milliseconds: 4000));
+    });
   }
 
-  void createAnInstallment(int instPlanSerno) {
+  Future<void> createAnInstallment(int instPlanSerno) async {
+    if (accSernoInt == -1) {
+      var accSernoFuture = await query.getAccSernoByCognitoId(context: context);
+      accSernoInt = int.parse(accSernoFuture);
+      _createAnInstallmentQuery(instPlanSerno);
+    } else {
+      _createAnInstallmentQuery(instPlanSerno);
+    }
+  }
+
+  void _createAnInstallmentQuery(int instPlanSerno) {
     List<String> instPlanInfoList = [];
-    List<int> lambdaParameters1 =
-        '{"name": "getAccSerno", "userId": "${userAttributes['sub'].toString()}"}'
-            .codeUnits;
-    var accSerno =
-        AuthFunc.crudFuncOnDb(parameters: lambdaParameters1, context: context);
 
     List<int> lambdaParamaeters2 =
         '{"name": "selectInstalmentPlan", "instPlanSerno": "${instPlanSerno.toString()}"}'
@@ -178,157 +202,99 @@ class _TempState extends State<Temp> {
       instPlanInfoList = x.split(',');
       interestRate = double.parse(instPlanInfoList[1].replaceAll(" ", ""));
       durationInMonths = int.parse(instPlanInfoList[0].replaceAll(" ", ""));
-      accSerno.then((value) {
-        accSernoInt = int.parse(value);
-        log(accSernoInt.toString());
-        List<int> lambdaParameters =
-            '{"name": "createInstallment",  "instType": "-1", "cAccSerno": "$accSernoInt", "instOrigAmount": "0", "instPrincipalAmount": "1000", "instTrxnSerno": "-1", "outstandingAmt": "1000", "instStatus": "NORM", "interestPercentage": "$interestRate", "instNoMonths": "$durationInMonths"}'
-                .codeUnits;
-        var result = AuthFunc.crudFuncOnDb(
-            parameters: lambdaParameters,
-            context: context,
-            funcName: 'createAnInstallment(int instPlanSerno)');
-        result.then((value) {
-          if (value.contains('errorMessage')) {
-            context.showErrorSnackBar(message: "Task Timed Out");
-          }
-        });
+      List<int> lambdaParameters =
+          '{"name": "createInstallment",  "instType": "-1", "cAccSerno": "$accSernoInt", "instOrigAmount": "0", "instPrincipalAmount": "1000", "instTrxnSerno": "-1", "outstandingAmt": "1000", "instStatus": "NORM", "interestPercentage": "$interestRate", "instNoMonths": "$durationInMonths"}'
+              .codeUnits;
+      var result = AuthFunc.crudFuncOnDb(
+          parameters: lambdaParameters,
+          context: context,
+          funcName: 'createAnInstallment(int instPlanSerno)');
+      result.then((value) {
+        context.showErrorSnackBar(
+            message: value, upTime: const Duration(milliseconds: 4000));
       });
     });
   }
 
-  void addInstallmentToAmortization() {
+  Future<void> addInstallmentToAmortization() async {
+    if (accSernoInt == -1) {
+      var accSernoFuture = await query.getAccSernoByCognitoId(context: context);
+      accSernoInt = int.parse(accSernoFuture);
+      _addInstallmentToAmortizationQuery();
+    } else {
+      _addInstallmentToAmortizationQuery();
+    }
+  }
+
+  void _addInstallmentToAmortizationQuery() {
     if (durationInMonths != -1) {
       var lambdaParameters =
           '{"name": "createAmortization", "durationInMonths": "$durationInMonths", "accSerno": "$accSernoInt"}'
               .codeUnits;
 
-      AuthFunc.crudFuncOnDb(
+      var result = AuthFunc.crudFuncOnDb(
           parameters: lambdaParameters,
           context: context,
           funcName: 'addInstallmentToAmortization()');
+      result.then((value) {
+        context.showErrorSnackBar(
+            message: value, upTime: const Duration(milliseconds: 4000));
+      });
     }
   }
 
   Future<void> getAndStoreSms() async {
+    if (accSernoInt == -1) {
+      var accSernoIntFuture =
+          await query.getAccSernoByCognitoId(context: context);
+      accSernoInt = int.parse(accSernoIntFuture);
+      _getAndStoreSmsQuery();
+    } else {
+      _getAndStoreSmsQuery();
+    }
+  }
+
+  Future<void> _getAndStoreSmsQuery() async {
     var query = SmsQuery();
     var senders = [];
-    var body = [];
+    var bodies = [];
     var datetimestamps = [];
     List<SmsMessage> messages = await query.getAllSms;
     messages.forEach((element) {
-      senders.add(element.sender.toString().replaceAll(" ", "").trim());
-      body.add(element.body.toString().replaceAll(" ", "").trim());
-      // senders.add((element.sender
-      //     .toString()
-      //     .replaceAll("[\\x00-\\x09\\x11\\x12\\x14-\\x1F\\x7F]", "")
-      //     .replaceAll(r'\', '\\')
-      //     .replaceAll('\n', '')
-      //     .replaceAll('\r', '')
-      //     .replaceAll('"', '\"')
-      //     .replaceAll("+", "")));
-      // body.add((element.body
-      //     .toString()
-      //     .replaceAll("[\\x00-\\x09\\x11\\x12\\x14-\\x1F\\x7F]", "")
-      //     .replaceAll(r'\', '\\')
-      //     .replaceAll('\n', '')
-      //     .replaceAll('\r', '')
-      //     .replaceAll('"', '\"')
-      //     .replaceAll("+", "")));
-      var timestamp = element.date!.day.toString() +
-          r'\\' +
+      final sender = element.sender.toString().trim();
+      final senderBytes = utf8.encode(sender);
+      final base64Sender = base64.encode(senderBytes);
+      senders.add(base64Sender);
+
+      final body = element.body.toString().trim();
+      final bodyBytes = utf8.encode(body);
+      final base64Body = base64.encode(bodyBytes);
+      bodies.add(base64Body);
+      var timestamp = element.date!.year.toString() +
+          r'-' +
           element.date!.month.toString() +
-          r'\\' +
-          element.date!.year.toString() +
+          r'-' +
+          element.date!.day.toString() +
           ' ' +
           element.date!.hour.toString() +
           ':' +
           element.date!.minute.toString() +
           ':' +
           element.date!.second.toString();
-      datetimestamps.add(timestamp);
+      final timestampBytes = utf8.encode(timestamp);
+      final base64Timestamp = base64.encode(timestampBytes);
+      datetimestamps.add(base64Timestamp);
     });
-    // var tempSenders = senders
-    //     .toString()
-    //     .replaceAll('+', '')
-    //     .replaceAll('*', '')
-    //     .replaceAll('(', '')
-    //     .replaceAll(')', '')
-    //     .replaceAll('.', '')
-    //     .replaceAll('\\', r'\')
-    //     .replaceAll('\n', r'\n')
-    //     .replaceAll('"', r'"')
-    //     .replaceAll('\b', r'\b')
-    //     .replaceAll('\f', r'\f')
-    //     .replaceAll('\r', r'\r')
-    //     .replaceAll('\t', r'\t');
-    // var tempBody = body
-    //     .toString()
-    //     .replaceAll('+', '')
-    //     .replaceAll('*', '')
-    //     .replaceAll('(', '')
-    //     .replaceAll(')', '')
-    //     .replaceAll('.', '')
-    //     .replaceAll('\\', r'\')
-    //     .replaceAll('\n', r'\n')
-    //     .replaceAll('"', r'"')
-    //     .replaceAll('\b', r'\b')
-    //     .replaceAll('\f', r'\f')
-    //     .replaceAll('\r', r'\r')
-    //     .replaceAll('\t', r'\t');
-    // log(jsonEncode(RegExp.escape(readyBody)));
-    var readySenders = (senders
-        .toString()
-        .replaceAll('+', '')
-        .replaceAll('[', '')
-        .replaceAll(']', ''));
-    var readyBody = RegExp.escape((body
-        .toString()
-        .replaceAll('+', '')
-        .replaceAll('[', '')
-        .replaceAll(']', '')
-        .replaceAll('*', '')
-        .replaceAll('(', '')
-        .replaceAll(')', '')
-        .replaceAll('{', '')
-        .replaceAll('}', '')
-        .replaceAll('\n', r'\n')
-        .replaceAll('"', r'"')
-        .replaceAll('\b', r'\b')
-        .replaceAll('\f', r'\f')
-        .replaceAll('\r', r'\r')
-        .replaceAll('\t', r'\t')
-        .replaceAll(String.fromCharCode(92), '')));
-    log(readyBody);
-    log(String.fromCharCode(92));
-    var lambdaParameters2 = '{}'.codeUnits;
-    if (accSernoInt != -1) {
-      lambdaParameters2 =
-          '{"name": "storeSms", "accSerno": "$accSernoInt", "sender": "$readySenders", "body": "$readyBody", "datetimestamp": $datetimestamps}'
-              .codeUnits;
-      var result = AuthFunc.crudFuncOnDb(
-          parameters: lambdaParameters2, context: context);
-      result.then((value) {
-        log(value.toString() + 'what');
-      });
-    } else {
-      List<int> lambdaParameters1 =
-          '{"name": "getAccSerno", "userId": "${userAttributes['sub'].toString()}"}'
-              .codeUnits;
-      var accSerno = AuthFunc.crudFuncOnDb(
-          parameters: lambdaParameters1, context: context);
-      accSerno.then((value) {
-        log(RegExp.escape(readySenders.toString()));
-        lambdaParameters2 =
-            '{"name": "storeSms", "accSerno": "$value", "sender": "", "body": "$readyBody", "datetimestamp": []}'
-                .codeUnits;
-        var result = AuthFunc.crudFuncOnDb(
-            parameters: lambdaParameters2, context: context);
-        result.then((value) {
-          log(value.toString() + 'what');
-        });
-      });
-    }
+    var lambdaParameters2 =
+        '{"name": "storeSms", "accSerno": "$accSernoInt", "sender": "$senders", "body": "$bodies", "datetimestamp": "$datetimestamps"}'
+            .codeUnits;
+    var result =
+        AuthFunc.crudFuncOnDb(parameters: lambdaParameters2, context: context);
+    result.then((value) {
+      context.showErrorSnackBar(
+          message: value.toString(),
+          upTime: const Duration(milliseconds: 4000));
+    });
   }
 
   void textRecognizerView() {
@@ -337,8 +303,13 @@ class _TempState extends State<Temp> {
   }
 
   void goToPlanSelection() {
+    Navigator.pushReplacement(context,
+        ForwardOrBackwardTransition(child: AvailablePlansPage(back: false)));
+  }
+
+  void goToHomeScreen() {
     Navigator.pushReplacement(
-        context, ForwardOrBackwardTransition(child: AvailablePlansPage()));
+        context, ForwardOrBackwardTransition(child: HomeScreen(), back: false));
   }
 
   @override
@@ -350,8 +321,6 @@ class _TempState extends State<Temp> {
 
   @override
   Widget build(BuildContext context) {
-    signUp();
-    please();
     if (!isLoaded && response != 'false') {
       testCallLambda().then(((value) {
         setState(() {
@@ -368,10 +337,7 @@ class _TempState extends State<Temp> {
       },
     );
 
-    if (response == 'false') {
-      context.showErrorSnackBar(message: 'Error contacting server.');
-      context.showErrorSnackBar(message: 'Check your internet connection');
-    }
+    if (response == 'false') {}
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -440,6 +406,10 @@ class _TempState extends State<Temp> {
                 ElevatedButton(
                   onPressed: goToPlanSelection,
                   child: Text("Go to plan selection"),
+                ),
+                ElevatedButton(
+                  onPressed: goToHomeScreen,
+                  child: Text("Go to home screen"),
                 ),
               ],
             ),

@@ -7,35 +7,35 @@ import '../auth/auth_functions.dart';
 class Query {
   var userAttributes = {};
 
-  int getAccSernoByCognitoId({required BuildContext context}) {
+  Future<String> getAccSernoByCognitoId({required BuildContext context}) async {
     if (userAttributes.isNotEmpty) {
-      var accSerno = -1;
       var lambdaParameters =
           '{"name": "getAccSerno", "userId": "${userAttributes['sub'].toString()}"}'
               .codeUnits;
       var accSernoFuture =
           AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
-      accSernoFuture.then((value) {
-        accSerno = int.parse(value);
-        return accSerno;
-      });
+      return accSernoFuture;
     } else {
-      var userAttributesFuture = AuthFunc.getUserAttributes(context: context);
-      userAttributesFuture.then((value) {
-        userAttributes = value;
-        var accSerno = -1;
-        var lambdaParameters =
-            '{"name": "getAccSerno", "userId": "${userAttributes['sub'].toString()}"}'
-                .codeUnits;
-        var accSernoFuture = AuthFunc.crudFuncOnDb(
-            parameters: lambdaParameters, context: context);
-        accSernoFuture.then((value) {
-          accSerno = int.parse(value);
-          return accSerno;
-        });
-      });
+      var userAttributes = await AuthFunc.getUserAttributes(context: context);
+      var lambdaParameters =
+          '{"name": "getAccSerno", "userId": "${userAttributes['sub'].toString()}"}'
+              .codeUnits;
+      var accSernoFuture =
+          AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
+      return accSernoFuture;
     }
-    return -1;
+  }
+
+  Future<String> getUserName({required BuildContext context}) async {
+    if (userAttributes.isEmpty) {
+      userAttributes = await AuthFunc.getUserAttributes(context: context);
+    }
+    var lambdaParameters =
+        '{"name": "getUserName", "userId": "${userAttributes['sub'].toString()}"}'
+            .codeUnits;
+    var userName =
+        AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
+    return userName;
   }
 
   Future<List<dynamic>> getInstPlanRateAndDuration(

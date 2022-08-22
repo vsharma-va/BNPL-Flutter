@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import './user_info_components/user_name_form.dart';
 import '../helper/animations/animated_indexed_stack.dart';
 import './user_info_components/pan_card_form.dart';
-import '../Home/temp.dart';
+import '../temp/temp.dart';
 import './user_info_components/profession_form.dart';
 import '../auth/auth_functions.dart';
 import '../theme_data.dart' as theme;
@@ -50,7 +50,13 @@ class _UserFormState extends State<UserForm> {
       List<int> lambdaParameters =
           '{"name": "insertcUser",  "userId": "${userAttributes["sub"].toString()}", "userName": "${(_firstNameController.text + " " + _lastNameController.text)}", "userEmail": "${userAttributes["email"]}", "userMobileNo": "1234567890", "userAge": "0", "userCast": "Empty"}'
               .codeUnits;
-      AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
+      var returnString =
+          AuthFunc.crudFuncOnDb(parameters: lambdaParameters, context: context);
+
+      returnString.then((value) {
+        log(value.toString());
+      });
+
       await Future.delayed(const Duration(milliseconds: 1500), () {});
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: ((context) => Temp())));
@@ -156,7 +162,7 @@ class _UserFormState extends State<UserForm> {
                         ),
                         child: Container(
                           alignment: Alignment.center,
-                          child: AnimatedIndexedStack(
+                          child: IndexedStack(
                             key: globalKey,
                             index: _formIndex,
                             children: [

@@ -10,7 +10,7 @@ import 'package:location/location.dart' as locationService;
 import '../landing_page/landing_page.dart';
 import '../helper/page_transitions/back_forward_transition.dart';
 import '../forms/user_info.dart';
-import '../home/temp.dart';
+import '../temp/temp.dart';
 import '../theme_data.dart' as theme;
 import '../helper/animations/out_of_screen_right.dart';
 

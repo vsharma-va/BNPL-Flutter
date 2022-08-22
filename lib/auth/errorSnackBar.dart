@@ -13,7 +13,8 @@ extension ShowSnackBar on BuildContext {
     ));
   }
 
-  void showErrorSnackBar({required String message, upTime}) {
+  void showErrorSnackBar(
+      {required String message, upTime = const Duration(milliseconds: 4000)}) {
     showSnackBar(message: message, backgroundColor: Colors.red, upTime: upTime);
   }
 }
