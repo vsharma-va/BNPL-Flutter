@@ -8,6 +8,8 @@ In the temp.dart file comment out the testCallLambda function and the text widge
 That function is calling a lambda function which returns all the tables in the database.
 
 ## Preview
+![V5-Home Flow](https://github.com/vsharma-va/BNPL-Flutter/assets/78730763/9eed8074-64b6-4124-be86-b68618f6707d)
+![V5-Auth Flow](https://github.com/vsharma-va/BNPL-Flutter/assets/78730763/34e75347-c334-4a9f-bc66-7c5614c95e2c)
 ![V4](https://user-images.githubusercontent.com/78730763/160389662-e8e35988-f558-4350-baf5-144ac5a9909d.mp4)  
 ![V3](https://user-images.githubusercontent.com/78730763/157047801-ee6d4da5-98a2-4a54-a28c-daa82778ba94.mp4)   
 ![V2](https://user-images.githubusercontent.com/78730763/156738573-1d558d18-2a70-47b4-8e2c-b3cd5c468491.mp4)  
